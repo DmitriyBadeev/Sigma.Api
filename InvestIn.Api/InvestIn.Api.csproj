@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+    <PropertyGroup>
+        <TargetFramework>net5.0</TargetFramework>
+        <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="GraphQL.Server.Ui.Voyager" Version="5.0.2" />
+        <PackageReference Include="HotChocolate.AspNetCore" Version="11.3.0" />
+        <PackageReference Include="HotChocolate.Data.EntityFramework" Version="11.3.0" />
+        <PackageReference Include="MediatR" Version="9.0.0" />
+        <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="9.0.0" />
+        <PackageReference Include="Swashbuckle.AspNetCore" Version="5.6.3" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\InvestIn.Core\InvestIn.Core.csproj" />
+      <ProjectReference Include="..\InvestIn.Infrastructure\InvestIn.Infrastructure.csproj" />
+    </ItemGroup>
+
+</Project>
