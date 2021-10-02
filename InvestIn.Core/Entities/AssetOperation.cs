@@ -17,6 +17,10 @@ namespace InvestIn.Core.Entities
 
         public decimal Price { get; set; }
 
+        public Guid CurrencyId { get; set; }
+        
+        public Currency Currency { get; set; }
+
         public DateTime Date { get; set; }
 
         public Portfolio Portfolio { get; set; }

@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using InvestIn.Core.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace InvestIn.Core.Entities
 {
+    [Index(nameof(Ticket), IsUnique = true)]
     public class Stock : IEntity
     {
         [Key]

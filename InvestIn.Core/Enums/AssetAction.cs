@@ -5,7 +5,7 @@ namespace InvestIn.Core.Enums
 {
     public enum AssetAction
     {
-        BuyAction,
-        SellAction
+        BuyAction = 1,
+        SellAction = 2
     }
 }

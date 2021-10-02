@@ -8,7 +8,7 @@ namespace InvestIn.Infrastructure
         public DbSet<AssetOperation> AssetOperations { get; set; }
         public DbSet<CurrencyOperation> CurrencyOperations { get; set; }
         public DbSet<DailyPortfolioReport> DailyPortfolioReports { get; set; }
-        public DbSet<Payment> Payments { get; set; }
+        public DbSet<Currency> Currencies { get; set; }
         public DbSet<PortfolioType> PortfolioTypes { get; set; }
         public DbSet<Stock> Stocks { get; set; }
         public DbSet<Fond> Fonds { get; set; }

@@ -17,7 +17,7 @@ namespace InvestIn.Core.Entities
 
         public decimal Balance { get; set; }
         
-        public DateTime Time { get; set; }
+        public DateTime Date { get; set; }
 
         public Guid PortfolioId { get; set; }
 

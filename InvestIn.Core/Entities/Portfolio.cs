@@ -19,11 +19,15 @@ namespace InvestIn.Core.Entities
         public PortfolioType PortfolioType { get; set; }
 
         public List<AssetOperation> AssetOperations { get; set; }
-        
-        public List<Payment> Payments { get; set; }
 
+        public List<CurrencyOperation> CurrencyOperations { get; set; }
+        
         public List<DailyPortfolioReport> DailyPortfolioReports { get; set; }
 
         public List<PortfolioStock> PortfolioStocks { get; set; }
+        
+        public List<PortfolioFond> PortfolioFonds { get; set; }
+        
+        public List<PortfolioBond> PortfolioBonds { get; set; }
     }
 }

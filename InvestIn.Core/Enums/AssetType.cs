@@ -2,8 +2,8 @@
 {
     public enum AssetType
     {
-        Stock,
-        Fond,
-        Bond
+        Stock = 1,
+        Fond = 2,
+        Bond = 3
     }
 }

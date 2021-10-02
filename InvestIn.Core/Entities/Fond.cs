@@ -1,9 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using InvestIn.Core.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace InvestIn.Core.Entities
 {
+    [Index(nameof(Ticket), IsUnique = true)]
     public class Fond : IEntity
     {
         [Key]
@@ -28,5 +31,7 @@ namespace InvestIn.Core.Entities
         public decimal PriceChange { get; set; }
         
         public DateTime UpdateTime { get; set; }
+        
+        public List<PortfolioFond> PortfolioFonds { get; set; }
     }
 }
