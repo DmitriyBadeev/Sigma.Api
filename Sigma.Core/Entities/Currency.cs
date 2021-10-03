@@ -11,6 +11,8 @@ namespace Sigma.Core.Entities
         public string Name { get; set; }
 
         public string Ticket { get; set; }
+        
+        public string Sign { get; set; }
 
         public decimal RubRate { get; set; }
         
