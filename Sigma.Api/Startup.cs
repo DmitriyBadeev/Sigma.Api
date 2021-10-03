@@ -1,3 +1,4 @@
+using System.Net.Http;
 using GraphQL.Server.Ui.Voyager;
 using Sigma.Infrastructure.Services;
 using MediatR;
@@ -7,6 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Sigma.Api.GraphQL;
+using Sigma.Integrations;
 
 namespace Sigma.Api
 {
@@ -24,8 +26,9 @@ namespace Sigma.Api
             var connectionString = Configuration.GetConnectionString("DefaultConnection");
             
             services.AddFinanceInfrastructureServices(connectionString);
+            services.AddIntegrationsServices();
             services.AddMediatR(typeof(Startup));
-            
+
             services
                 .AddGraphQLServer()
                 .AddQueryType<Query>()

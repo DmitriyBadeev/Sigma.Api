@@ -10,6 +10,7 @@ namespace Sigma.Infrastructure.Services
             string connectionString)
         {
             services.AddPooledDbContextFactory<FinanceDbContext>(options => options.UseNpgsql(connectionString));
+            services.AddDbContext<FinanceDbContext>(opt => opt.UseNpgsql(connectionString));
             services.AddScoped<ISeedDataService, SeedFinanceDataService>();
             
             return services;

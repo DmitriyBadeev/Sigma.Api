@@ -3,6 +3,7 @@ using HotChocolate;
 using HotChocolate.Data;
 using Sigma.Core.Entities;
 using Sigma.Infrastructure;
+using Sigma.Integrations.Moex.Service;
 
 namespace Sigma.Api.GraphQL
 {
@@ -27,6 +28,15 @@ namespace Sigma.Api.GraphQL
         public IQueryable<AssetOperation> GetAssetOperations([ScopedService] FinanceDbContext context)
         {
             return context.AssetOperations;
+        }
+
+        [UseDbContext(typeof(FinanceDbContext))]
+        [UseProjection]
+        public DefaultPayload Refresh([ScopedService] FinanceDbContext context, [Service] IMoexService moexService)
+        {
+            moexService.RefreshBoards();
+
+            return new DefaultPayload(true, ""){};
         }
     }
 }
