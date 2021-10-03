@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Sigma.Infrastructure.Migrations
 {
-    public partial class Initial : Migration
+    public partial class NewModelData : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -29,6 +29,22 @@ namespace Sigma.Infrastructure.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Bonds", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Currencies",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Name = table.Column<string>(type: "text", nullable: true),
+                    Ticket = table.Column<string>(type: "text", nullable: true),
+                    RubRate = table.Column<decimal>(type: "numeric", nullable: false),
+                    DollarRate = table.Column<decimal>(type: "numeric", nullable: false),
+                    EuroRate = table.Column<decimal>(type: "numeric", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Currencies", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -117,6 +133,7 @@ namespace Sigma.Infrastructure.Migrations
                     Ticket = table.Column<string>(type: "text", nullable: false),
                     Amount = table.Column<int>(type: "integer", nullable: false),
                     Price = table.Column<decimal>(type: "numeric", nullable: false),
+                    CurrencyId = table.Column<Guid>(type: "uuid", nullable: false),
                     Date = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
                     PortfolioId = table.Column<Guid>(type: "uuid", nullable: false),
                     AssetType = table.Column<int>(type: "integer", nullable: false),
@@ -125,6 +142,12 @@ namespace Sigma.Infrastructure.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AssetOperations", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_AssetOperations_Currencies_CurrencyId",
+                        column: x => x.CurrencyId,
+                        principalTable: "Currencies",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_AssetOperations_Portfolios_PortfolioId",
                         column: x => x.PortfolioId,
@@ -138,16 +161,23 @@ namespace Sigma.Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    CurrencyName = table.Column<string>(type: "text", nullable: true),
-                    CurrencyId = table.Column<string>(type: "text", nullable: true),
+                    CurrencyId = table.Column<Guid>(type: "uuid", nullable: false),
                     Total = table.Column<decimal>(type: "numeric", nullable: false),
                     Date = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
-                    CurrencyAction = table.Column<int>(type: "integer", nullable: false),
-                    PortfolioId = table.Column<Guid>(type: "uuid", nullable: false)
+                    OperationType = table.Column<int>(type: "integer", nullable: false),
+                    PortfolioId = table.Column<Guid>(type: "uuid", nullable: false),
+                    Ticket = table.Column<string>(type: "text", nullable: true),
+                    Amount = table.Column<int>(type: "integer", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_CurrencyOperations", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_CurrencyOperations_Currencies_CurrencyId",
+                        column: x => x.CurrencyId,
+                        principalTable: "Currencies",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_CurrencyOperations_Portfolios_PortfolioId",
                         column: x => x.PortfolioId,
@@ -165,7 +195,7 @@ namespace Sigma.Infrastructure.Migrations
                     PaperProfit = table.Column<decimal>(type: "numeric", nullable: false),
                     PaymentProfit = table.Column<decimal>(type: "numeric", nullable: false),
                     Balance = table.Column<decimal>(type: "numeric", nullable: false),
-                    Time = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    Date = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
                     PortfolioId = table.Column<Guid>(type: "uuid", nullable: false)
                 },
                 constraints: table =>
@@ -173,29 +203,6 @@ namespace Sigma.Infrastructure.Migrations
                     table.PrimaryKey("PK_DailyPortfolioReports", x => x.Id);
                     table.ForeignKey(
                         name: "FK_DailyPortfolioReports_Portfolios_PortfolioId",
-                        column: x => x.PortfolioId,
-                        principalTable: "Portfolios",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Payments",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    Ticket = table.Column<string>(type: "text", nullable: false),
-                    Amount = table.Column<int>(type: "integer", nullable: false),
-                    PaymentPerOne = table.Column<decimal>(type: "numeric", nullable: false),
-                    AllPayment = table.Column<decimal>(type: "numeric", nullable: false),
-                    Date = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
-                    PortfolioId = table.Column<Guid>(type: "uuid", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Payments", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Payments_Portfolios_PortfolioId",
                         column: x => x.PortfolioId,
                         principalTable: "Portfolios",
                         principalColumn: "Id",
@@ -284,9 +291,25 @@ namespace Sigma.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_AssetOperations_CurrencyId",
+                table: "AssetOperations",
+                column: "CurrencyId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_AssetOperations_PortfolioId",
                 table: "AssetOperations",
                 column: "PortfolioId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Bonds_Ticket",
+                table: "Bonds",
+                column: "Ticket",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CurrencyOperations_CurrencyId",
+                table: "CurrencyOperations",
+                column: "CurrencyId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_CurrencyOperations_PortfolioId",
@@ -299,9 +322,10 @@ namespace Sigma.Infrastructure.Migrations
                 column: "PortfolioId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Payments_PortfolioId",
-                table: "Payments",
-                column: "PortfolioId");
+                name: "IX_Fonds_Ticket",
+                table: "Fonds",
+                column: "Ticket",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_PortfolioBonds_BondId",
@@ -337,6 +361,12 @@ namespace Sigma.Infrastructure.Migrations
                 name: "IX_PortfolioStocks_StockId",
                 table: "PortfolioStocks",
                 column: "StockId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Stocks_Ticket",
+                table: "Stocks",
+                column: "Ticket",
+                unique: true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -351,9 +381,6 @@ namespace Sigma.Infrastructure.Migrations
                 name: "DailyPortfolioReports");
 
             migrationBuilder.DropTable(
-                name: "Payments");
-
-            migrationBuilder.DropTable(
                 name: "PortfolioBonds");
 
             migrationBuilder.DropTable(
@@ -361,6 +388,9 @@ namespace Sigma.Infrastructure.Migrations
 
             migrationBuilder.DropTable(
                 name: "PortfolioStocks");
+
+            migrationBuilder.DropTable(
+                name: "Currencies");
 
             migrationBuilder.DropTable(
                 name: "Bonds");

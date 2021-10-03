@@ -36,11 +36,10 @@ namespace Sigma.Infrastructure.Services
             }
        
             AddPortfolioTypes();
+            AddCurrencies();
             
             _logger.LogInformation("Database has seeded successfully");
         }
-        
-        
 
         private void AddPortfolioTypes()
         {
@@ -64,6 +63,49 @@ namespace Sigma.Infrastructure.Services
                 _context.SaveChanges();
                 
                 _logger.LogInformation("Added portfolio types successfully");
+            }
+        }
+
+        private void AddCurrencies()
+        {
+            if (!_context.Currencies.Any())
+            {
+                _logger.LogInformation("Adding currencies");
+
+                var rub = new Currency()
+                {
+                    Name = "Рубль",
+                    Ticket = "RUB",
+                    Sign = "₽",
+                    DollarRate = (decimal) 72.73,
+                    EuroRate = (decimal) 84.29,
+                    RubRate = 1,
+                };
+
+                var dollar = new Currency()
+                {
+                    Name = "Доллар",
+                    Ticket = "USD",
+                    Sign = "$",
+                    DollarRate = 1,
+                    EuroRate = (decimal) 0.86,
+                    RubRate = (decimal) 0.014,
+                };
+
+                var euro = new Currency()
+                {
+                    Name = "Евро",
+                    Ticket = "EUR",
+                    Sign = "€",
+                    DollarRate = (decimal) 1.16,
+                    EuroRate = 1,
+                    RubRate = (decimal) 0.012
+                };
+                
+                _context.Currencies.AddRange(rub, dollar, euro);
+                _context.SaveChanges();
+                
+                _logger.LogInformation("Added currencies");
             }
         }
     }
