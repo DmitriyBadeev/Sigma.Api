@@ -9,13 +9,13 @@ namespace Sigma.Api.Mediator
 {
     public static class CreatePortfolio
     {
-        public record Command(AddPortfolioInput Input, FinanceDbContext Context) : IRequest<DefaultPayload>;
+        public record Command(AddPortfolioInput Input, FinanceDbContext Context, string UserId) : IRequest<DefaultPayload>;
     
         public class Handler : IRequestHandler<Command, DefaultPayload>
         {
             public async Task<DefaultPayload> Handle(Command request, CancellationToken cancellationToken)
             {
-                var (input, context) = request;
+                var (input, context, userId) = request;
             
                 var portfolioType = await context.PortfolioTypes.FindAsync(input.TypeId);
 
@@ -26,7 +26,7 @@ namespace Sigma.Api.Mediator
             
                 var portfolio = new Portfolio{
                     Name = input.Name,
-                    UserId = input.UserId,
+                    UserId = userId,
                     PortfolioTypeId = portfolioType.Id
                 };
 
