@@ -22,4 +22,8 @@
       <ProjectReference Include="..\Sigma.Infrastructure\Sigma.Infrastructure.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Mediator\Aggregates" />
+    </ItemGroup>
+
 </Project>

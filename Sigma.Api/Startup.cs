@@ -14,6 +14,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Logging;
 using Sigma.Api.GraphQL;
+using Sigma.Api.Validations;
 
 namespace Sigma.Api
 {
@@ -31,6 +32,8 @@ namespace Sigma.Api
             var connectionString = Configuration.GetConnectionString("DefaultConnection");
             
             services.AddFinanceInfrastructureServices(connectionString);
+            services.AddValidationService();
+
             services.AddMediatR(typeof(Startup));
             
             services

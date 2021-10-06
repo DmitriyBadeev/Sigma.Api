@@ -1,9 +1,16 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using HotChocolate;
 using HotChocolate.AspNetCore.Authorization;
 using HotChocolate.Data;
+using MediatR;
 using Sigma.Api.Attributes;
+using Sigma.Api.Mediator.Operations;
+using Sigma.Api.Validations.Interfaces;
 using Sigma.Core.Entities;
+using Sigma.Core.Enums;
 using Sigma.Infrastructure;
 
 namespace Sigma.Api.GraphQL
@@ -18,12 +25,12 @@ namespace Sigma.Api.GraphQL
         [UseProjection]
         public IQueryable<Portfolio> GetPortfolios([ScopedService] FinanceDbContext context, [UserId] string userId)
         {
-            return context.Portfolios;
+            return context.Portfolios.Where(p => p.UserId == userId);
         }
         
         [Authorize]
         [UseDbContext(typeof(FinanceDbContext))]
-        public IQueryable<PortfolioType> GetPortfolioTypes([ScopedService] FinanceDbContext context, [UserId] string userId)
+        public IQueryable<PortfolioType> GetPortfolioTypes([ScopedService] FinanceDbContext context)
         {
             return context.PortfolioTypes;
         }
@@ -31,9 +38,172 @@ namespace Sigma.Api.GraphQL
         [Authorize]
         [UseDbContext(typeof(FinanceDbContext))]
         [UseProjection]
-        public IQueryable<AssetOperation> GetAssetOperations([ScopedService] FinanceDbContext context, [UserId] string userId)
+        public async Task<DefaultPayload<IQueryable<AssetOperation>>> GetAssetOperations(
+            [ScopedService] FinanceDbContext context, 
+            [Service] IMediator mediator,
+            [Service] IValidationService validationService,
+            [UserId] string userId, 
+            Guid portfolioId)
         {
-            return context.AssetOperations;
+            return await mediator.Send(new GetAssetOperations.Query(userId, portfolioId, validationService, context));
+        }
+        
+        [Authorize]
+        public string[] GetCurrencyOperationTypes()
+        {
+            return Enum.GetNames<OperationType>();
+        }
+        
+        [Authorize]
+        [UseDbContext(typeof(FinanceDbContext))]
+        [UseProjection]
+        public async Task<DefaultPayload<IQueryable<AssetOperation>>> GetCurrencyOperations(
+            [ScopedService] FinanceDbContext context, 
+            [Service] IMediator mediator, 
+            [Service] IValidationService validationService,
+            [UserId] string userId, 
+            Guid portfolioId)
+        {
+            return await mediator.Send(new GetCurrencyOperations.Query(userId, portfolioId, validationService, context));
+        }
+
+        [Authorize]
+        [UseDbContext(typeof(FinanceDbContext))]
+        [UseProjection]
+        public async Task<DefaultPayload<decimal>> AggregateBalance(
+            [ScopedService] FinanceDbContext context, 
+            [Service] IMediator mediator, 
+            [UserId] string userId, 
+            IEnumerable<Guid> portfolioIds)
+        {
+            return new DefaultPayload<decimal>(true);
+        }
+        
+        [Authorize]
+        [UseDbContext(typeof(FinanceDbContext))]
+        [UseProjection]
+        public async Task<DefaultPayload<decimal>> AggregateInvestSum(
+            [ScopedService] FinanceDbContext context, 
+            [Service] IMediator mediator, 
+            [UserId] string userId, 
+            IEnumerable<Guid> portfolioIds)
+        {
+            return new DefaultPayload<decimal>(true);
+        }
+        
+        // TODO Переделать на новые операции
+        [Authorize]
+        [UseDbContext(typeof(FinanceDbContext))]
+        [UseProjection]
+        public async Task<DefaultPayload<List<PaymentData>>> AggregatePortfolioPayments(
+            [ScopedService] FinanceDbContext context, 
+            [Service] IMediator mediator, 
+            [UserId] string userId, 
+            IEnumerable<Guid> portfolioIds)
+        {
+            return new DefaultPayload<List<PaymentData>>(true);
+        }
+        
+        [Authorize]
+        [UseDbContext(typeof(FinanceDbContext))]
+        [UseProjection]
+        public async Task<DefaultPayload<List<PaymentData>>> AggregateFuturePayments(
+            [ScopedService] FinanceDbContext context, 
+            [Service] IMediator mediator, 
+            [UserId] string userId, 
+            IEnumerable<Guid> portfolioIds)
+        {
+            return new DefaultPayload<List<PaymentData>>(true);
+        }
+        
+        [Authorize]
+        [UseDbContext(typeof(FinanceDbContext))]
+        [UseProjection]
+        public async Task<DefaultPayload<ValuePercent>> AggregatePortfolioPaymentProfit(
+            [ScopedService] FinanceDbContext context, 
+            [Service] IMediator mediator, 
+            [UserId] string userId, 
+            IEnumerable<Guid> portfolioIds)
+        {
+            return new DefaultPayload<ValuePercent>(true);
+        }
+        
+        [Authorize]
+        [UseDbContext(typeof(FinanceDbContext))]
+        [UseProjection]
+        public async Task<DefaultPayload<ValuePercent>> AggregatePortfolioPaperProfit(
+            [ScopedService] FinanceDbContext context, 
+            [Service] IMediator mediator, 
+            [UserId] string userId, 
+            IEnumerable<Guid> portfolioIds)
+        {
+            return new DefaultPayload<ValuePercent>(true);
+        }
+        
+        [Authorize]
+        [UseDbContext(typeof(FinanceDbContext))]
+        [UseProjection]
+        public async Task<DefaultPayload<decimal>> AggregatePortfolioCost(
+            [ScopedService] FinanceDbContext context, 
+            [Service] IMediator mediator, 
+            [UserId] string userId, 
+            IEnumerable<Guid> portfolioIds)
+        {
+            return new DefaultPayload<decimal>(true);
+        }
+        
+        [Authorize]
+        [UseDbContext(typeof(FinanceDbContext))]
+        [UseProjection]
+        public async Task<DefaultPayload<CostWithInvestSum>> AggregatePortfolioCostWithInvestSum(
+            [ScopedService] FinanceDbContext context, 
+            [Service] IMediator mediator, 
+            [UserId] string userId, 
+            IEnumerable<Guid> portfolioIds)
+        {
+            return new DefaultPayload<CostWithInvestSum>(true);
+        }
+        
+        [Authorize]
+        [UseDbContext(typeof(FinanceDbContext))]
+        [UseProjection]
+        public async Task<DefaultPayload<StockReport>> AggregateStocks(
+            [ScopedService] FinanceDbContext context, 
+            [Service] IMediator mediator, 
+            [UserId] string userId, 
+            IEnumerable<Guid> portfolioIds)
+        {
+            return new DefaultPayload<StockReport>(true);
+        }
+        
+        [Authorize]
+        [UseDbContext(typeof(FinanceDbContext))]
+        [UseProjection]
+        public async Task<DefaultPayload<FondReport>> AggregateFonds(
+            [ScopedService] FinanceDbContext context, 
+            [Service] IMediator mediator, 
+            [UserId] string userId, 
+            IEnumerable<Guid> portfolioIds)
+        {
+            return new DefaultPayload<FondReport>(true);
+        }
+        
+        [Authorize]
+        [UseDbContext(typeof(FinanceDbContext))]
+        [UseProjection]
+        public async Task<DefaultPayload<BondReport>> AggregateBonds(
+            [ScopedService] FinanceDbContext context, 
+            [Service] IMediator mediator, 
+            [UserId] string userId, 
+            IEnumerable<Guid> portfolioIds)
+        {
+            return new DefaultPayload<BondReport>(true);
+        }
+        
+        [Authorize]
+        public string SecretData()
+        {
+            return "Secret";
         }
     }
 }
