@@ -89,6 +89,16 @@ namespace Sigma.Api.GraphQL
             return new DefaultPayload(true);
         }
         
+        [Authorize]
+        [UseDbContext(typeof(FinanceDbContext))]
+        public async Task<DefaultPayload> AddPaymentInPortfolio(
+            PaymentInput input,
+            [ScopedService] FinanceDbContext context, 
+            [Service] IMediator mediator)
+        {
+            return new DefaultPayload(true);
+        }
+        
         
     }
 }

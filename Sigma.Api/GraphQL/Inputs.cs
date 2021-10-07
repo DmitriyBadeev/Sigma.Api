@@ -31,12 +31,19 @@ namespace Sigma.Api.GraphQL
         int PortfolioId,
         int Price,
         DateTime Date);
+
+    public record PaymentInput(
+        int PortfolioId,
+        string Ticket,
+        int Amount,
+        int PaymentValue,
+        DateTime Date);
     
     public enum CandleInterval
     {
         Week = 7,
-        Day = 24, // 0x00000018
-        Month = 31, // 0x0000001F
-        Hour = 60, // 0x0000003C
+        Day = 24,
+        Month = 31,
+        Hour = 60,
     }
 }
