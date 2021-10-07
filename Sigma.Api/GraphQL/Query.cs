@@ -167,37 +167,37 @@ namespace Sigma.Api.GraphQL
         [Authorize]
         [UseDbContext(typeof(FinanceDbContext))]
         [UseProjection]
-        public async Task<DefaultPayload<StockReport>> AggregateStocks(
+        public async Task<DefaultPayload<List<StockReport>>> AggregateStocks(
             [ScopedService] FinanceDbContext context, 
             [Service] IMediator mediator, 
             [UserId] string userId, 
             IEnumerable<Guid> portfolioIds)
         {
-            return new DefaultPayload<StockReport>(true);
+            return new DefaultPayload<List<StockReport>>(true);
         }
         
         [Authorize]
         [UseDbContext(typeof(FinanceDbContext))]
         [UseProjection]
-        public async Task<DefaultPayload<FondReport>> AggregateFonds(
+        public async Task<DefaultPayload<List<FondReport>>> AggregateFonds(
             [ScopedService] FinanceDbContext context, 
             [Service] IMediator mediator, 
             [UserId] string userId, 
             IEnumerable<Guid> portfolioIds)
         {
-            return new DefaultPayload<FondReport>(true);
+            return new DefaultPayload<List<FondReport>>(true);
         }
         
         [Authorize]
         [UseDbContext(typeof(FinanceDbContext))]
         [UseProjection]
-        public async Task<DefaultPayload<BondReport>> AggregateBonds(
+        public async Task<DefaultPayload<List<BondReport>>> AggregateBonds(
             [ScopedService] FinanceDbContext context, 
             [Service] IMediator mediator, 
             [UserId] string userId, 
             IEnumerable<Guid> portfolioIds)
         {
-            return new DefaultPayload<BondReport>(true);
+            return new DefaultPayload<List<BondReport>>(true);
         }
         
         [Authorize]
@@ -235,7 +235,7 @@ namespace Sigma.Api.GraphQL
         {
             return new List<CostGraphData>();
         }
-        
+
         [Authorize]
         public string SecretData()
         {
