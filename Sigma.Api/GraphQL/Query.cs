@@ -207,7 +207,7 @@ namespace Sigma.Api.GraphQL
             [ScopedService] FinanceDbContext context, 
             [Service] IMediator mediator, 
             [UserId] string userId, 
-            IEnumerable<Guid> portfolioIds)
+            string ticket, DateTime from, CandleInterval interval)
         {
             return new List<StockCandle>();
         }
@@ -219,7 +219,7 @@ namespace Sigma.Api.GraphQL
             [ScopedService] FinanceDbContext context, 
             [Service] IMediator mediator, 
             [UserId] string userId, 
-            IEnumerable<Guid> portfolioIds)
+            int portfolioId)
         {
             return new List<TimeValue>();
         }
