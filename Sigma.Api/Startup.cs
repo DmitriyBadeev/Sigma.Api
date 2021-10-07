@@ -33,7 +33,7 @@ namespace Sigma.Api
             
             services.AddFinanceInfrastructureServices(connectionString);
             services.AddValidationService();
-
+            services.AddCors();
             services.AddMediatR(typeof(Startup));
             
             services
@@ -62,11 +62,14 @@ namespace Sigma.Api
             {
                 app.UseDeveloperExceptionPage();
             }
-
-            app.UseHttpsRedirection();
-
-            app.UseRouting();
+            app.UseCors(b => b
+                .AllowAnyHeader()
+                .AllowAnyMethod()
+                .AllowAnyOrigin());
             
+            app.UseHttpsRedirection();
+            app.UseRouting();
+
             app.UseAuthentication();
             app.UseAuthorization();
 
