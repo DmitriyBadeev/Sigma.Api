@@ -92,7 +92,7 @@ namespace Sigma.Api
             
             if (identity is {IsAuthenticated: true})
             {
-                requestBuilder.SetProperty("userId",
+                requestBuilder.SetProperty("UserId",
                     context.User.FindFirstValue("sub"));
             }
             
