@@ -201,6 +201,42 @@ namespace Sigma.Api.GraphQL
         }
         
         [Authorize]
+        [UseDbContext(typeof(FinanceDbContext))]
+        [UseProjection]
+        public async Task<List<StockCandle>> StockCandles(
+            [ScopedService] FinanceDbContext context, 
+            [Service] IMediator mediator, 
+            [UserId] string userId, 
+            IEnumerable<Guid> portfolioIds)
+        {
+            return new List<StockCandle>();
+        }
+        
+        [Authorize]
+        [UseDbContext(typeof(FinanceDbContext))]
+        [UseProjection]
+        public List<TimeValue> PortfolioCostGraph(
+            [ScopedService] FinanceDbContext context, 
+            [Service] IMediator mediator, 
+            [UserId] string userId, 
+            IEnumerable<Guid> portfolioIds)
+        {
+            return new List<TimeValue>();
+        }
+        
+        [Authorize]
+        [UseDbContext(typeof(FinanceDbContext))]
+        [UseProjection]
+        public async Task<List<CostGraphData>> AggregatePortfolioCostGraph(
+            [ScopedService] FinanceDbContext context, 
+            [Service] IMediator mediator, 
+            [UserId] string userId, 
+            IEnumerable<Guid> portfolioIds)
+        {
+            return new List<CostGraphData>();
+        }
+        
+        [Authorize]
         public string SecretData()
         {
             return "Secret";

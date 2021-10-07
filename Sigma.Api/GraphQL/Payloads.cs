@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Sigma.Api.GraphQL
 {
@@ -60,4 +61,22 @@ namespace Sigma.Api.GraphQL
         string UpdateTime,
         DateTime AmortizationDate,
         bool HasAmortized);
+
+    public record StockCandle(
+        double Open,
+        double Close,
+        double High,
+        double Low,
+        double Value,
+        double Volume,
+        long Date);
+
+    public record TimeValue(
+        long Date,
+        int Value);
+
+    public record CostGraphData(
+        int PortfolioId,
+        string PortfolioName,
+        List<TimeValue> Data);
 }
