@@ -13,11 +13,11 @@ namespace Sigma.Api.Mediator.Operations
     public static class GetCurrencyOperations
     {
         public record Query(string UserId, Guid PortfolioId, IValidationService ValidationService, FinanceDbContext Context) 
-            : IRequest<DefaultPayload<IQueryable<AssetOperation>>>;
+            : IRequest<DefaultPayload<IQueryable<CurrencyOperation>>>;
         
-        public class Handler : IRequestHandler<Query, DefaultPayload<IQueryable<AssetOperation>>>
+        public class Handler : IRequestHandler<Query, DefaultPayload<IQueryable<CurrencyOperation>>>
         {
-            public async Task<DefaultPayload<IQueryable<AssetOperation>>> Handle(Query request, CancellationToken cancellationToken)
+            public async Task<DefaultPayload<IQueryable<CurrencyOperation>>> Handle(Query request, CancellationToken cancellationToken)
             {
                 var (userId, portfolioId, validationService, context) = request;
 
@@ -28,13 +28,13 @@ namespace Sigma.Api.Mediator.Operations
 
                 if (error != null)
                 {
-                    return new DefaultPayload<IQueryable<AssetOperation>>(false, error.Message);
+                    return new DefaultPayload<IQueryable<CurrencyOperation>>(false, error.Message);
                 }
 
-                var operations = context.AssetOperations
+                var operations = context.CurrencyOperations
                     .Where(o => o.PortfolioId == portfolioId);
 
-                return new DefaultPayload<IQueryable<AssetOperation>>(true, Result: operations);
+                return new DefaultPayload<IQueryable<CurrencyOperation>>(true, Result: operations);
             }
         }
     }

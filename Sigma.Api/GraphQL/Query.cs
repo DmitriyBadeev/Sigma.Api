@@ -57,7 +57,7 @@ namespace Sigma.Api.GraphQL
         [Authorize]
         [UseDbContext(typeof(FinanceDbContext))]
         [UseProjection]
-        public async Task<DefaultPayload<IQueryable<AssetOperation>>> GetCurrencyOperations(
+        public async Task<DefaultPayload<IQueryable<CurrencyOperation>>> GetCurrencyOperations(
             [ScopedService] FinanceDbContext context, 
             [Service] IMediator mediator, 
             [Service] IValidationService validationService,
