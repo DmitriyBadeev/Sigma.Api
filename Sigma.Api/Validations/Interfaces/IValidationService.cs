@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Sigma.Core.Interfaces;
 
 namespace Sigma.Api.Validations.Interfaces
 {
@@ -7,9 +8,12 @@ namespace Sigma.Api.Validations.Interfaces
     {
         public IEnumerable<IValidationError> Errors { get; }
 
-        ValidationService PortfolioBelongsUser(Guid portfolioId, string userId);
-        ValidationService CheckPortfolioType(Guid typeId);
+        IValidationError FirstError { get; }
 
-        ValidationService CheckPortfolioExist(Guid portfolioId);
+        ValidationService PortfolioBelongsUser(Guid? portfolioId, string userId);
+        ValidationService CheckExist<T>(Guid id) where T : class, IEntity;
+        ValidationService NotNegative(int number);
+        ValidationService NotNegative(decimal number);
+        ValidationService CheckEnumValue<TEnum>(TEnum enumValue) where TEnum : struct, Enum;
     }
 }

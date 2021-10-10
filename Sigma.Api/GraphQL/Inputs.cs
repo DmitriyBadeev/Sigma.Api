@@ -1,4 +1,5 @@
 ﻿using System;
+using Sigma.Core.Enums;
 
 namespace Sigma.Api.GraphQL
 {
@@ -6,39 +7,25 @@ namespace Sigma.Api.GraphQL
     public record RemovePortfolioInput(Guid PortfolioId);  
     public record UpdatePortfolioInput(Guid PortfolioId, string Name, Guid TypeId);
 
-    public record BuyAssetInput(
-        int PortfolioId,
-        string Ticket,
-        int Price,
-        int Amount,
-        int AssetTypeId,
-        DateTime Date);
-
-    public record SellAssetInput(
-        int PortfolioId,
-        string Ticket,
-        int Price,
-        int Amount,
-        int AssetTypeId,
-        DateTime Date);
-
-    public record RefillBalanceInput(
-        int PortfolioId,
-        int Price,
-        DateTime Date);
-
-    public record WithdrawalBalanceInput(
-        int PortfolioId,
-        int Price,
-        DateTime Date);
-
-    public record PaymentInput(
-        int PortfolioId,
+    public record AssetOperationInput(
         string Ticket,
         int Amount,
-        int PaymentValue,
-        DateTime Date);
-    
+        decimal Price,
+        Guid CurrencyId,
+        DateTime Date,
+        Guid PortfolioId,
+        AssetType AssetType,
+        AssetAction AssetAction);
+
+    public record CurrencyOperationInput(
+        Guid CurrencyId,
+        decimal Total,
+        DateTime Date,
+        OperationType OperationType,
+        Guid PortfolioId,
+        string Ticket,
+        int? Amount);
+
     public enum CandleInterval
     {
         Week = 7,

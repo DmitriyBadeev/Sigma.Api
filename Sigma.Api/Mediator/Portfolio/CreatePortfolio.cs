@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
 using Sigma.Api.GraphQL;
@@ -20,9 +19,8 @@ namespace Sigma.Api.Mediator.Portfolio
                 var (input, context, validationService, userId) = request;
 
                 var error = validationService
-                    .CheckPortfolioType(input.TypeId)
-                    .Errors
-                    .FirstOrDefault();
+                    .CheckExist<Core.Entities.Portfolio>(input.TypeId)
+                    .FirstError;
 
                 if (error != null)
                 {

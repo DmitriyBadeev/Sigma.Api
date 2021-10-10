@@ -1,10 +1,12 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using HotChocolate;
 using HotChocolate.AspNetCore.Authorization;
 using HotChocolate.Data;
 using Sigma.Infrastructure;
 using MediatR;
 using Sigma.Api.Attributes;
+using Sigma.Api.Mediator.Operations;
 using Sigma.Api.Mediator.Portfolio;
 using Sigma.Api.Validations.Interfaces;
 
@@ -48,57 +50,55 @@ namespace Sigma.Api.GraphQL
         {
             return await mediator.Send(new UpdatePortfolio.Command(input, validationService, context));
         }
-        
+
         [Authorize]
         [UseDbContext(typeof(FinanceDbContext))]
-        public async Task<DefaultPayload> BuyAsset(
-            BuyAssetInput input,
+        public async Task<DefaultPayload> CreateAssetOperation(
+            AssetOperationInput input,
             [ScopedService] FinanceDbContext context, 
-            [Service] IMediator mediator)
+            [Service] IMediator mediator,
+            [Service] IValidationService validationService,
+            [UserId] string userId)
         {
-            return new DefaultPayload(true);
+            return await mediator.Send(new CreateAssetOperation.Command(input, context, validationService, userId));
         }
         
         [Authorize]
         [UseDbContext(typeof(FinanceDbContext))]
-        public async Task<DefaultPayload> SellAsset(
-            SellAssetInput input,
+        public async Task<DefaultPayload> RemoveAssetOperation(
+            Guid assetOperationId,
             [ScopedService] FinanceDbContext context, 
-            [Service] IMediator mediator)
+            [Service] IMediator mediator,
+            [Service] IValidationService validationService,
+            [UserId] string userId)
         {
-            return new DefaultPayload(true);
+            return await mediator.Send(new RemoveAssetOperation.Command(assetOperationId, context, validationService, userId));
         }
         
         [Authorize]
         [UseDbContext(typeof(FinanceDbContext))]
-        public async Task<DefaultPayload> RefillBalance(
-            RefillBalanceInput input,
+        public async Task<DefaultPayload> CreateCurrencyOperation(
+            CurrencyOperationInput input,
             [ScopedService] FinanceDbContext context, 
-            [Service] IMediator mediator)
+            [Service] IMediator mediator,
+            [Service] IValidationService validationService,
+            [UserId] string userId)
         {
-            return new DefaultPayload(true);
+            return await mediator.Send(new CreateCurrencyOperation.Command(input, context, validationService, userId));
         }
-        
+
         [Authorize]
         [UseDbContext(typeof(FinanceDbContext))]
-        public async Task<DefaultPayload> WithdrawalBalance(
-            WithdrawalBalanceInput input,
+        public async Task<DefaultPayload> RemoveCurrencyOperation(
+            Guid currencyOperationId,
             [ScopedService] FinanceDbContext context, 
-            [Service] IMediator mediator)
+            [Service] IMediator mediator,
+            [Service] IValidationService validationService,
+            [UserId] string userId)
         {
-            return new DefaultPayload(true);
+            return await mediator.Send(new RemoveCurrencyOperation.Command(currencyOperationId, context, validationService, userId));
         }
-        
-        [Authorize]
-        [UseDbContext(typeof(FinanceDbContext))]
-        public async Task<DefaultPayload> AddPaymentInPortfolio(
-            PaymentInput input,
-            [ScopedService] FinanceDbContext context, 
-            [Service] IMediator mediator)
-        {
-            return new DefaultPayload(true);
-        }
-        
-        
+
+
     }
 }

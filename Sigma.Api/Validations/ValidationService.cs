@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using Sigma.Api.Validations.Interfaces;
 using Sigma.Api.Validations.ValidationErrors;
+using Sigma.Core.Interfaces;
 using Sigma.Infrastructure;
 
 namespace Sigma.Api.Validations
@@ -20,11 +22,13 @@ namespace Sigma.Api.Validations
 
         public IEnumerable<IValidationError> Errors => _validationErrors;
 
-        public ValidationService PortfolioBelongsUser(Guid portfolioId, string userId)
+        public IValidationError FirstError => _validationErrors.FirstOrDefault();
+
+        public ValidationService PortfolioBelongsUser(Guid? portfolioId, string userId)
         {
             var portfolio = _context.Portfolios.Find(portfolioId);
 
-            if (portfolio.UserId != userId)
+            if (portfolio?.UserId != userId)
             {
                 _validationErrors.Add(new PortfolioBelongsUserError());
             }
@@ -32,25 +36,45 @@ namespace Sigma.Api.Validations
             return this;
         }
 
-        public ValidationService CheckPortfolioType(Guid typeId)
+        public ValidationService CheckExist<T>(Guid id) where T : class, IEntity
         {
-            var portfolioType = _context.PortfolioTypes.Find(typeId);
+            var entity = _context.Set<T>().Find(id);
 
-            if (portfolioType == null)
+            if (entity is null)
             {
-                _validationErrors.Add(new WrongPortfolioTypeError());
+                _validationErrors.Add( new NotExistError());
             }
 
             return this;
         }
 
-        public ValidationService CheckPortfolioExist(Guid portfolioId)
+        public ValidationService NotNegative(int number)
         {
-            var portfolio = _context.Portfolios.Find(portfolioId);
-            
-            if (portfolio == null)
+            if (number < 0)
             {
-                _validationErrors.Add( new PortfolioNotExistError());
+                _validationErrors.Add(new NegativeNumberError());
+            }
+
+            return this;
+        }
+        
+        public ValidationService NotNegative(decimal number)
+        {
+            if (number < 0)
+            {
+                _validationErrors.Add(new NegativeNumberError());
+            }
+
+            return this;
+        }
+
+        public ValidationService CheckEnumValue<TEnum>(TEnum enumValue) where TEnum : struct, Enum
+        {
+            var values = Enum.GetValues<TEnum>();
+
+            if (!values.Contains(enumValue))
+            {
+                _validationErrors.Add(new InvalidEnumValueError());
             }
 
             return this;

@@ -37,8 +37,15 @@ namespace Sigma.Api.GraphQL
         
         [Authorize]
         [UseDbContext(typeof(FinanceDbContext))]
-        public async Task<DefaultPayload<IQueryable<AssetOperation>>> GetAssetOperations(
-            [ScopedService] FinanceDbContext context, 
+        public IQueryable<Currency> GetCurrencies([ScopedService] FinanceDbContext context)
+        {
+            return context.Currencies;
+        }
+        
+        [Authorize]
+        [UseDbContext(typeof(FinanceDbContext))]
+        public async Task<DefaultPayload<List<AssetOperation>>> GetAssetOperations(
+            [ScopedService] FinanceDbContext context,
             [Service] IMediator mediator,
             [Service] IValidationService validationService,
             [UserId] string userId, 
@@ -46,16 +53,10 @@ namespace Sigma.Api.GraphQL
         {
             return await mediator.Send(new GetAssetOperations.Query(userId, portfolioId, validationService, context));
         }
-        
-        [Authorize]
-        public string[] GetCurrencyOperationTypes()
-        {
-            return Enum.GetNames<OperationType>();
-        }
-        
+
         [Authorize]
         [UseDbContext(typeof(FinanceDbContext))]
-        public async Task<DefaultPayload<IQueryable<CurrencyOperation>>> GetCurrencyOperations(
+        public async Task<DefaultPayload<List<CurrencyOperation>>> GetCurrencyOperations(
             [ScopedService] FinanceDbContext context, 
             [Service] IMediator mediator, 
             [Service] IValidationService validationService,
@@ -63,6 +64,12 @@ namespace Sigma.Api.GraphQL
             Guid portfolioId)
         {
             return await mediator.Send(new GetCurrencyOperations.Query(userId, portfolioId, validationService, context));
+        }
+        
+        [Authorize]
+        public string[] GetCurrencyOperationTypes()
+        {
+            return Enum.GetNames<OperationType>();
         }
 
         [Authorize]

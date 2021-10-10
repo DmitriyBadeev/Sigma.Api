@@ -19,9 +19,8 @@ namespace Sigma.Api.Mediator.Portfolio
                 var (input, validationService, context) = request;
 
                 var error = validationService
-                    .CheckPortfolioExist(input.PortfolioId)
-                    .Errors
-                    .FirstOrDefault();
+                    .CheckExist<Core.Entities.Portfolio>(input.PortfolioId)
+                    .FirstError;
                 
                 if (error != null)
                 {
