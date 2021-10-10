@@ -22,7 +22,6 @@ namespace Sigma.Api.GraphQL
     {
         [Authorize]
         [UseDbContext(typeof(FinanceDbContext))]
-        [UseProjection]
         public IQueryable<Portfolio> GetPortfolios([ScopedService] FinanceDbContext context, [UserId] string userId)
         {
             return context.Portfolios.Where(p => p.UserId == userId);
@@ -37,7 +36,6 @@ namespace Sigma.Api.GraphQL
         
         [Authorize]
         [UseDbContext(typeof(FinanceDbContext))]
-        [UseProjection]
         public async Task<DefaultPayload<IQueryable<AssetOperation>>> GetAssetOperations(
             [ScopedService] FinanceDbContext context, 
             [Service] IMediator mediator,
@@ -56,7 +54,6 @@ namespace Sigma.Api.GraphQL
         
         [Authorize]
         [UseDbContext(typeof(FinanceDbContext))]
-        [UseProjection]
         public async Task<DefaultPayload<IQueryable<CurrencyOperation>>> GetCurrencyOperations(
             [ScopedService] FinanceDbContext context, 
             [Service] IMediator mediator, 
@@ -69,7 +66,6 @@ namespace Sigma.Api.GraphQL
 
         [Authorize]
         [UseDbContext(typeof(FinanceDbContext))]
-        [UseProjection]
         public async Task<DefaultPayload<decimal>> AggregateBalance(
             [ScopedService] FinanceDbContext context, 
             [Service] IMediator mediator, 
@@ -81,7 +77,6 @@ namespace Sigma.Api.GraphQL
         
         [Authorize]
         [UseDbContext(typeof(FinanceDbContext))]
-        [UseProjection]
         public async Task<DefaultPayload<decimal>> AggregateInvestSum(
             [ScopedService] FinanceDbContext context, 
             [Service] IMediator mediator, 
@@ -94,7 +89,6 @@ namespace Sigma.Api.GraphQL
         // TODO Переделать на новые операции
         [Authorize]
         [UseDbContext(typeof(FinanceDbContext))]
-        [UseProjection]
         public async Task<DefaultPayload<List<PaymentData>>> AggregatePortfolioPayments(
             [ScopedService] FinanceDbContext context, 
             [Service] IMediator mediator, 
@@ -106,7 +100,6 @@ namespace Sigma.Api.GraphQL
         
         [Authorize]
         [UseDbContext(typeof(FinanceDbContext))]
-        [UseProjection]
         public async Task<DefaultPayload<List<PaymentData>>> AggregateFuturePayments(
             [ScopedService] FinanceDbContext context, 
             [Service] IMediator mediator, 
@@ -118,7 +111,6 @@ namespace Sigma.Api.GraphQL
         
         [Authorize]
         [UseDbContext(typeof(FinanceDbContext))]
-        [UseProjection]
         public async Task<DefaultPayload<ValuePercent>> AggregatePortfolioPaymentProfit(
             [ScopedService] FinanceDbContext context, 
             [Service] IMediator mediator, 
@@ -130,7 +122,6 @@ namespace Sigma.Api.GraphQL
         
         [Authorize]
         [UseDbContext(typeof(FinanceDbContext))]
-        [UseProjection]
         public async Task<DefaultPayload<ValuePercent>> AggregatePortfolioPaperProfit(
             [ScopedService] FinanceDbContext context, 
             [Service] IMediator mediator, 
@@ -142,7 +133,6 @@ namespace Sigma.Api.GraphQL
         
         [Authorize]
         [UseDbContext(typeof(FinanceDbContext))]
-        [UseProjection]
         public async Task<DefaultPayload<decimal>> AggregatePortfolioCost(
             [ScopedService] FinanceDbContext context, 
             [Service] IMediator mediator, 
@@ -154,7 +144,6 @@ namespace Sigma.Api.GraphQL
         
         [Authorize]
         [UseDbContext(typeof(FinanceDbContext))]
-        [UseProjection]
         public async Task<DefaultPayload<CostWithInvestSum>> AggregatePortfolioCostWithInvestSum(
             [ScopedService] FinanceDbContext context, 
             [Service] IMediator mediator, 
@@ -166,7 +155,6 @@ namespace Sigma.Api.GraphQL
         
         [Authorize]
         [UseDbContext(typeof(FinanceDbContext))]
-        [UseProjection]
         public async Task<DefaultPayload<List<StockReport>>> AggregateStocks(
             [ScopedService] FinanceDbContext context, 
             [Service] IMediator mediator, 
@@ -178,7 +166,6 @@ namespace Sigma.Api.GraphQL
         
         [Authorize]
         [UseDbContext(typeof(FinanceDbContext))]
-        [UseProjection]
         public async Task<DefaultPayload<List<FondReport>>> AggregateFonds(
             [ScopedService] FinanceDbContext context, 
             [Service] IMediator mediator, 
@@ -190,7 +177,6 @@ namespace Sigma.Api.GraphQL
         
         [Authorize]
         [UseDbContext(typeof(FinanceDbContext))]
-        [UseProjection]
         public async Task<DefaultPayload<List<BondReport>>> AggregateBonds(
             [ScopedService] FinanceDbContext context, 
             [Service] IMediator mediator, 
@@ -202,7 +188,6 @@ namespace Sigma.Api.GraphQL
         
         [Authorize]
         [UseDbContext(typeof(FinanceDbContext))]
-        [UseProjection]
         public async Task<List<StockCandle>> StockCandles(
             [ScopedService] FinanceDbContext context, 
             [Service] IMediator mediator, 
@@ -214,7 +199,6 @@ namespace Sigma.Api.GraphQL
         
         [Authorize]
         [UseDbContext(typeof(FinanceDbContext))]
-        [UseProjection]
         public List<TimeValue> PortfolioCostGraph(
             [ScopedService] FinanceDbContext context, 
             [Service] IMediator mediator, 
@@ -226,7 +210,6 @@ namespace Sigma.Api.GraphQL
         
         [Authorize]
         [UseDbContext(typeof(FinanceDbContext))]
-        [UseProjection]
         public async Task<List<CostGraphData>> AggregatePortfolioCostGraph(
             [ScopedService] FinanceDbContext context, 
             [Service] IMediator mediator, 
