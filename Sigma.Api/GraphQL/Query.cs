@@ -22,6 +22,7 @@ namespace Sigma.Api.GraphQL
     {
         [Authorize]
         [UseDbContext(typeof(FinanceDbContext))]
+        [UseProjection]
         public IQueryable<Portfolio> GetPortfolios([ScopedService] FinanceDbContext context, [UserId] string userId)
         {
             return context.Portfolios.Where(p => p.UserId == userId);
