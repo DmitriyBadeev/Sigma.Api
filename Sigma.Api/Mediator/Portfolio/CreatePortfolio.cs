@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using MediatR;
 using Sigma.Api.GraphQL;
 using Sigma.Api.Validations.Interfaces;
+using Sigma.Core.Entities;
 using Sigma.Infrastructure;
 
 namespace Sigma.Api.Mediator.Portfolio
@@ -19,7 +20,7 @@ namespace Sigma.Api.Mediator.Portfolio
                 var (input, context, validationService, userId) = request;
 
                 var error = validationService
-                    .CheckExist<Core.Entities.Portfolio>(input.TypeId)
+                    .CheckExist<PortfolioType>(input.TypeId)
                     .FirstError;
 
                 if (error != null)
