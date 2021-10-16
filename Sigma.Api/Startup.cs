@@ -47,8 +47,9 @@ namespace Sigma.Api
             services.AddAuthentication("Bearer")
                 .AddIdentityServerAuthentication(options =>
                 {
-                    options.Authority = "https://identity-sigma.herokuapp.com";
+                    options.Authority = "http://identity-sigma.herokuapp.com";
                     options.ApiName = "Sigma.Api";
+                    options.RequireHttpsMetadata = false;
                     IdentityModelEventSource.ShowPII = true;
                 });
             
