@@ -49,7 +49,6 @@ namespace Sigma.Api
                 {
                     options.Authority = "https://identity-sigma.herokuapp.com";
                     options.ApiName = "Sigma.Api";
-                    options.RequireHttpsMetadata = false;
                     IdentityModelEventSource.ShowPII = true;
                 });
             
