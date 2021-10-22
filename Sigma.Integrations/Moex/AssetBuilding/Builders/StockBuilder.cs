@@ -12,7 +12,7 @@ namespace Sigma.Integrations.Moex.AssetBuilding.Builders
     {
         public List<Stock> BuildAssets(AssetResponse boardJson)
         {
-            throw new NotImplementedException();
+            return new List<Stock>();
         }
     }
 }

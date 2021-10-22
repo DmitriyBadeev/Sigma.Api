@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Text.Json;
 using Sigma.Core.Entities;
 using Sigma.Core.Interfaces;
@@ -34,7 +35,7 @@ namespace Sigma.Integrations.Moex.Service
         private void RefreshBoard<TAsset>()
             where TAsset : IAsset
         {
-            var tradeMode = Enum.Parse<MoexTradeModes>(nameof(TAsset));
+            var tradeMode = Enum.Parse<MoexTradeModes>(typeof(TAsset).Name);
 
             var boardJson = _moexApi.GetBoardJson(tradeMode).Result;
 
@@ -50,7 +51,7 @@ namespace Sigma.Integrations.Moex.Service
 
             var assets = assetBuilder.BuildAssets(assetJson);
 
-            _context.AddRange(assets);
+            _context.AddRange(assets.Cast<object>().ToArray());
         }
     }
 }
