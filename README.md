@@ -1,1 +1,1 @@
-# Graphql API для Investin
+# Graphql API для Sigma

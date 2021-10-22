@@ -28,6 +28,7 @@ namespace InvestIn.Hangfire
 
             services.AddFinanceInfrastructureServices(connectionString);
             services.AddIntegrationsServices();
+            services.AddCors();
             services.AddTransient<TaskRegistrationService>();
 
             services.AddHangfire(configuration => configuration
