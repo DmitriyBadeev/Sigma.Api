@@ -5,10 +5,11 @@ using Sigma.Core.Entities;
 using Sigma.Core.Interfaces;
 using Sigma.Infrastructure;
 using Sigma.Integrations.Common.Enums;
+using Sigma.Integrations.Moex;
 using Sigma.Integrations.Moex.AssetBuilding;
 using Sigma.Integrations.Moex.Models;
 
-namespace Sigma.Integrations.Moex.Service
+namespace Sigma.Services.Service
 {
     public class MoexService : IMoexService
     {
@@ -25,6 +26,11 @@ namespace Sigma.Integrations.Moex.Service
 
         public void RefreshBoards()
         {
+            // TODO: Рассмотреть в будущем возможность апдейта без удаления всех записей
+            _context.RemoveRange(_context.Stocks);
+            _context.RemoveRange(_context.Fonds);
+            _context.RemoveRange(_context.Bonds);
+
             RefreshBoard<Stock>();
             RefreshBoard<Fond>();
             RefreshBoard<Bond>();
@@ -50,7 +56,7 @@ namespace Sigma.Integrations.Moex.Service
             var assetBuilder = _assetBuilderFactory.GetAssetBuilder<TAsset>();
 
             var assets = assetBuilder.BuildAssets(assetJson);
-
+            
             _context.AddRange(assets.Cast<object>().ToArray());
         }
     }

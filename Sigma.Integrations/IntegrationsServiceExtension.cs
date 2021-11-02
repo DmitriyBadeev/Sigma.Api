@@ -9,7 +9,6 @@ using Sigma.Core.Entities;
 using Sigma.Integrations.Moex;
 using Sigma.Integrations.Moex.AssetBuilding;
 using Sigma.Integrations.Moex.AssetBuilding.Builders;
-using Sigma.Integrations.Moex.Service;
 
 namespace Sigma.Integrations
 {
@@ -17,7 +16,6 @@ namespace Sigma.Integrations
     {
         public static IServiceCollection AddIntegrationsServices(this IServiceCollection services)
         {
-            // inside assembly usage
             services.AddScoped<HttpClient>();
             services.AddScoped<MoexApi>();
             services.AddScoped<AssetBuilderFactory>();
@@ -25,9 +23,6 @@ namespace Sigma.Integrations
             services.AddScoped<IAssetBuilder<Stock>, StockBuilder>();
             services.AddScoped<IAssetBuilder<Fond>, FondBuilder>();
             services.AddScoped<IAssetBuilder<Bond>, BondBuilder>();
-
-            // outside assembly usage
-            services.AddScoped<IMoexService, MoexService>();
 
             return services;
         }

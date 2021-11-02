@@ -8,6 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Sigma.Infrastructure.Services;
 using Sigma.Integrations;
+using Sigma.Services;
 
 namespace InvestIn.Hangfire
 {
@@ -28,6 +29,7 @@ namespace InvestIn.Hangfire
 
             services.AddFinanceInfrastructureServices(connectionString);
             services.AddIntegrationsServices();
+            services.AddServiceLayerServices();
             services.AddCors();
             services.AddTransient<TaskRegistrationService>();
 

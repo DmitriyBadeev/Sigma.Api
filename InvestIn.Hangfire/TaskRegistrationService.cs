@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Hangfire;
 using Hangfire.PostgreSql;
 using Microsoft.Extensions.Configuration;
-using Sigma.Integrations.Moex.Service;
+using Sigma.Services.Service;
 
 namespace InvestIn.Hangfire
 {

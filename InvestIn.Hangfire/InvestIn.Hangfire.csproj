@@ -12,7 +12,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\Sigma.Api\Sigma.Integrations\Sigma.Integrations.csproj" />
+      <ProjectReference Include="..\Sigma.Services\Sigma.Services.csproj" />
     </ItemGroup>
 
 </Project>

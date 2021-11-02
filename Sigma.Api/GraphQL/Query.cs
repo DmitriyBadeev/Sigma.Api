@@ -12,7 +12,7 @@ using Sigma.Api.Validations.Interfaces;
 using Sigma.Core.Entities;
 using Sigma.Core.Enums;
 using Sigma.Infrastructure;
-using Sigma.Integrations.Moex.Service;
+using Sigma.Services.Service;
 
 namespace Sigma.Api.GraphQL
 {

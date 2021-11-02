@@ -23,7 +23,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Sigma.Infrastructure\Sigma.Infrastructure.csproj" />
-      <ProjectReference Include="..\Sigma.Integrations\Sigma.Integrations.csproj" />
+      <ProjectReference Include="..\Sigma.Services\Sigma.Services.csproj" />
     </ItemGroup>
 
 </Project>
