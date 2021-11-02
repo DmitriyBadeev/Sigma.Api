@@ -7,7 +7,7 @@ using Hangfire.PostgreSql;
 using Microsoft.Extensions.Configuration;
 using Sigma.Services.Service;
 
-namespace InvestIn.Hangfire
+namespace Sigma.Hangfire
 {
     public class TaskRegistrationService
     {

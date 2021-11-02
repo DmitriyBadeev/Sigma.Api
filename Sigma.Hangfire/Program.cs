@@ -9,7 +9,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Sigma.Core.Interfaces;
 
-namespace InvestIn.Hangfire
+namespace Sigma.Hangfire
 {
     public class Program
     {

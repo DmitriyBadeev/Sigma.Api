@@ -1,6 +1,6 @@
 ﻿using Hangfire.Dashboard;
 
-namespace InvestIn.Hangfire.Filters
+namespace Sigma.Hangfire.Filters
 {
     public class AuthorizationFilter : IDashboardAuthorizationFilter
     {

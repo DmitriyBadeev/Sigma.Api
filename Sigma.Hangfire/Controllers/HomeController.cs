@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
-namespace InvestIn.Hangfire.Controllers
+namespace Sigma.Hangfire.Controllers
 {
     [ApiController]
     [Route("[controller]")]

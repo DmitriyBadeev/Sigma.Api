@@ -1,16 +1,16 @@
 using Hangfire;
 using Hangfire.PostgreSql;
-using InvestIn.Hangfire.Filters;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Sigma.Hangfire.Filters;
 using Sigma.Infrastructure.Services;
 using Sigma.Integrations;
 using Sigma.Services;
 
-namespace InvestIn.Hangfire
+namespace Sigma.Hangfire
 {
     public class Startup
     {
