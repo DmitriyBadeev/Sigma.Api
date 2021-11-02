@@ -12,6 +12,7 @@ using Sigma.Api.Validations.Interfaces;
 using Sigma.Core.Entities;
 using Sigma.Core.Enums;
 using Sigma.Infrastructure;
+using Sigma.Services.Service;
 
 namespace Sigma.Api.GraphQL
 {
@@ -231,6 +232,15 @@ namespace Sigma.Api.GraphQL
         public string SecretData()
         {
             return "Secret";
+        }
+
+        [UseDbContext(typeof(FinanceDbContext))]
+        [UseProjection]
+        public DefaultPayload Refresh([ScopedService] FinanceDbContext context, [Service] IMoexService moexService)
+        {
+            moexService.RefreshBoards();
+
+            return new DefaultPayload(true, ""){};
         }
     }
 }

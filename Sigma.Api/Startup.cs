@@ -15,6 +15,8 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Logging;
 using Sigma.Api.GraphQL;
 using Sigma.Api.Validations;
+using Sigma.Integrations;
+using Sigma.Services;
 
 namespace Sigma.Api
 {
@@ -32,6 +34,8 @@ namespace Sigma.Api
             var connectionString = Configuration.GetConnectionString("DefaultConnection");
             
             services.AddFinanceInfrastructureServices(connectionString);
+            services.AddIntegrationsServices();
+            services.AddServiceLayerServices();
             services.AddValidationService();
             services.AddCors();
             services.AddMediatR(typeof(Startup));
