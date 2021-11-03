@@ -39,7 +39,7 @@ namespace Sigma.Hangfire
                 .UseRecommendedSerializerSettings()
                 .UsePostgreSqlStorage(Configuration.GetConnectionString("HangfireConnection")));
 
-            services.AddHangfireServer();
+            services.AddHangfireServer(options => options.WorkerCount = 1);
             services.AddMvc();
         }
 
@@ -52,7 +52,7 @@ namespace Sigma.Hangfire
             
             app.UseHttpsRedirection();
             app.UseRouting();
-
+            
             app.UseEndpoints(endpoints => 
             { 
                 endpoints.MapControllers();
