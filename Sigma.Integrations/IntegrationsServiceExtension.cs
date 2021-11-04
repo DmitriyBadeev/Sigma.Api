@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Net.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Sigma.Core.Entities;
 using Sigma.Integrations.Moex;
@@ -19,6 +14,7 @@ namespace Sigma.Integrations
             services.AddScoped<HttpClient>();
             services.AddScoped<MoexApi>();
             services.AddScoped<AssetBuilderFactory>();
+            services.AddScoped<MoexIntegrationService>();
 
             services.AddScoped<IAssetBuilder<Stock>, StockBuilder>();
             services.AddScoped<IAssetBuilder<Fond>, FondBuilder>();

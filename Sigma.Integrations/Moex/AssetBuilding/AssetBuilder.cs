@@ -14,7 +14,7 @@ namespace Sigma.Integrations.Moex.AssetBuilding
     public abstract class AssetBuilder<TAsset> : IAssetBuilder<TAsset>
         where TAsset : IAsset
     {
-        private Dictionary<string, (string propertyName, MappingMethods.MapPropertyFunc mapFunc)> _mapRules = new();
+        private readonly Dictionary<string, (string propertyName, MappingMethods.MapPropertyFunc mapFunc)> _mapRules;
 
         protected AssetBuilder(Dictionary<string, (string propertyName, MappingMethods.MapPropertyFunc mapFunc)> mapRules)
         {

@@ -1,9 +1,5 @@
-﻿using System.Net.Http;
-using Microsoft.Extensions.DependencyInjection;
-using Sigma.Core.Entities;
-using Sigma.Integrations.Moex;
-using Sigma.Integrations.Moex.AssetBuilding;
-using Sigma.Integrations.Moex.AssetBuilding.Builders;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Sigma.Services.Interfaces;
 using Sigma.Services.Service;
 
 namespace Sigma.Services
@@ -12,7 +8,7 @@ namespace Sigma.Services
     {
         public static IServiceCollection AddServiceLayerServices(this IServiceCollection services)
         {
-            services.AddScoped<IMoexService, MoexService>();
+            services.AddScoped<IRefreshDataService, RefreshDataService>();
 
             return services;
         }

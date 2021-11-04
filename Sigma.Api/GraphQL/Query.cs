@@ -12,7 +12,6 @@ using Sigma.Api.Validations.Interfaces;
 using Sigma.Core.Entities;
 using Sigma.Core.Enums;
 using Sigma.Infrastructure;
-using Sigma.Services.Service;
 
 namespace Sigma.Api.GraphQL
 {
@@ -41,6 +40,27 @@ namespace Sigma.Api.GraphQL
         public IQueryable<Currency> GetCurrencies([ScopedService] FinanceDbContext context)
         {
             return context.Currencies;
+        }
+        
+        [Authorize]
+        [UseDbContext(typeof(FinanceDbContext))]
+        public IQueryable<Stock> GetStocks([ScopedService] FinanceDbContext context)
+        {
+            return context.Stocks;
+        }
+        
+        [Authorize]
+        [UseDbContext(typeof(FinanceDbContext))]
+        public IQueryable<Fond> GetFonds([ScopedService] FinanceDbContext context)
+        {
+            return context.Fonds;
+        }
+        
+        [Authorize]
+        [UseDbContext(typeof(FinanceDbContext))]
+        public IQueryable<Bond> GetBonds([ScopedService] FinanceDbContext context)
+        {
+            return context.Bonds;
         }
         
         [Authorize]
@@ -94,19 +114,7 @@ namespace Sigma.Api.GraphQL
         {
             return new DefaultPayload<decimal>(true);
         }
-        
-        // TODO Переделать на новые операции
-        [Authorize]
-        [UseDbContext(typeof(FinanceDbContext))]
-        public async Task<DefaultPayload<List<PaymentData>>> AggregatePortfolioPayments(
-            [ScopedService] FinanceDbContext context, 
-            [Service] IMediator mediator, 
-            [UserId] string userId, 
-            IEnumerable<Guid> portfolioIds)
-        {
-            return new DefaultPayload<List<PaymentData>>(true);
-        }
-        
+
         [Authorize]
         [UseDbContext(typeof(FinanceDbContext))]
         public async Task<DefaultPayload<List<PaymentData>>> AggregateFuturePayments(
@@ -232,15 +240,6 @@ namespace Sigma.Api.GraphQL
         public string SecretData()
         {
             return "Secret";
-        }
-
-        [UseDbContext(typeof(FinanceDbContext))]
-        [UseProjection]
-        public DefaultPayload Refresh([ScopedService] FinanceDbContext context, [Service] IMoexService moexService)
-        {
-            moexService.RefreshBoards();
-
-            return new DefaultPayload(true, ""){};
         }
     }
 }
