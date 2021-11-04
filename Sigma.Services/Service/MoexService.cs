@@ -30,6 +30,8 @@ namespace Sigma.Services.Service
             _context.RemoveRange(_context.Stocks);
             _context.RemoveRange(_context.Fonds);
             _context.RemoveRange(_context.Bonds);
+            
+            _context.SaveChanges();
 
             RefreshBoard<Stock>();
             RefreshBoard<Fond>();
