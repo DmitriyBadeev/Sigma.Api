@@ -46,7 +46,7 @@ namespace Sigma.Api.GraphQL
         [UseDbContext(typeof(FinanceDbContext))]
         public IQueryable<Stock> GetStocks([ScopedService] FinanceDbContext context)
         {
-            return context.Stocks;
+            return context.Stocks.OrderByDescending(s => s.Capitalization);
         }
         
         [Authorize]
