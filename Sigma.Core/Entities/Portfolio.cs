@@ -13,7 +13,27 @@ namespace Sigma.Core.Entities
         public string UserId { get; set; }
         
         public string Name { get; set; }
+        
 
+        public decimal Cost { get; set; }
+
+        public decimal InvestedSum { get; set; }
+
+        public decimal Profit { get; set; }
+
+        public decimal ProfitPercent { get; set; }
+
+        public decimal DividendProfit { get; set; }
+        
+        public decimal DividendProfitPercent { get; set; }
+
+        public decimal RubBalance { get; set; }
+
+        public decimal DollarBalance { get; set; }
+
+        public decimal EuroBalance { get; set; }
+        
+        
         public Guid PortfolioTypeId { get; set; }
 
         public PortfolioType PortfolioType { get; set; }

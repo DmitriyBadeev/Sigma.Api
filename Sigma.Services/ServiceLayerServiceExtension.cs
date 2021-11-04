@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Sigma.Services.Interfaces;
-using Sigma.Services.Service;
+using Sigma.Services.Services;
 
 namespace Sigma.Services
 {

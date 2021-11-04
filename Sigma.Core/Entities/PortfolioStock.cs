@@ -12,7 +12,13 @@ namespace Sigma.Core.Entities
         public int Amount { get; set; }
 
         public decimal BoughtPrice { get; set; }
+
+        public decimal Cost { get; set; }
+
+        public decimal PaperProfit { get; set; }
         
+        public decimal PaperProfitPercent { get; set; }
+
         public Portfolio Portfolio { get; set; }
 
         public Guid PortfolioId { get; set; }

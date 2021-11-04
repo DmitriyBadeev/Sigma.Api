@@ -10,6 +10,10 @@ namespace Sigma.Infrastructure.Services
     {
         public static string SBER_TYPE = "СберБанк Инвестор";
         public static string TINKOFF_TYPE = "Тинькофф Инвестиции";
+
+        public static string RUB_TICKET = "RUB";
+        public static string EURO_TICKET = "EUR";
+        public static string DOLLAR_TICKET = "USD";
     }
 
     public class SeedFinanceDataService : ISeedDataService
@@ -75,7 +79,7 @@ namespace Sigma.Infrastructure.Services
                 var rub = new Currency()
                 {
                     Name = "Рубль",
-                    Ticket = "RUB",
+                    Ticket = SeedFinanceData.RUB_TICKET,
                     Sign = "₽",
                     DollarRate = (decimal) 72.73,
                     EuroRate = (decimal) 84.29,
@@ -85,7 +89,7 @@ namespace Sigma.Infrastructure.Services
                 var dollar = new Currency()
                 {
                     Name = "Доллар",
-                    Ticket = "USD",
+                    Ticket = SeedFinanceData.DOLLAR_TICKET,
                     Sign = "$",
                     DollarRate = 1,
                     EuroRate = (decimal) 0.86,
@@ -95,7 +99,7 @@ namespace Sigma.Infrastructure.Services
                 var euro = new Currency()
                 {
                     Name = "Евро",
-                    Ticket = "EUR",
+                    Ticket = SeedFinanceData.EURO_TICKET,
                     Sign = "€",
                     DollarRate = (decimal) 1.16,
                     EuroRate = 1,
