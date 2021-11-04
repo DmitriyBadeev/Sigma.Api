@@ -17,19 +17,19 @@ namespace Sigma.Integrations.Moex.AssetBuilding.Builders
         public BondBuilder() 
             : base(_mapRules)
         {
-            _mapRules.Add("SECID", (nameof(Bond.Ticket), MappingMethods.MapPropertyString));
-            _mapRules.Add("SHORTNAME", (nameof(Bond.ShortName), MappingMethods.MapPropertyString));
-            _mapRules.Add("SECNAME", (nameof(Bond.MarketFullName), MappingMethods.MapPropertyString));
-            //_mapRules.Add("", nameof(Bond.FullName));
-            _mapRules.Add("LATNAME", (nameof(Bond.LatName), MappingMethods.MapPropertyString));
-            //_mapRules.Add("", nameof(Bond.Description));
-            _mapRules.Add("LAST", (nameof(Bond.Percent), MappingMethods.MapPropertyDecimal));
-            _mapRules.Add("(LAST(percent) / 100) * FACEVALUE(nominal) + ACCRUEDINT(nkd)", (nameof(Bond.Price), MapPrice));
-            _mapRules.Add("LASTTOPREVPRICE", (nameof(Bond.PercentChange), MappingMethods.MapPropertyDecimal));
-            _mapRules.Add("UPDATETIME + PREVDATE", (nameof(Bond.UpdateTime), MappingMethods.MapUpdateTime));
-            _mapRules.Add("MATDATE", (nameof(Bond.AmortizationDate), MappingMethods.MapPropertyDateTime));
-            _mapRules.Add("FACEVALUE", (nameof(Bond.Nominal), MappingMethods.MapPropertyDecimal));
-            _mapRules.Add("COUPONVALUE", (nameof(Bond.Coupon), MappingMethods.MapPropertyDecimal));
+            _mapRules.TryAdd("SECID", (nameof(Bond.Ticket), MappingMethods.MapPropertyString));
+            _mapRules.TryAdd("SHORTNAME", (nameof(Bond.ShortName), MappingMethods.MapPropertyString));
+            _mapRules.TryAdd("SECNAME", (nameof(Bond.MarketFullName), MappingMethods.MapPropertyString));
+            //_mapRules.TryAdd("", nameof(Bond.FullName));
+            _mapRules.TryAdd("LATNAME", (nameof(Bond.LatName), MappingMethods.MapPropertyString));
+            //_mapRules.TryAdd("", nameof(Bond.Description));
+            _mapRules.TryAdd("LAST", (nameof(Bond.Percent), MappingMethods.MapPropertyDecimal));
+            _mapRules.TryAdd("(LAST(percent) / 100) * FACEVALUE(nominal) + ACCRUEDINT(nkd)", (nameof(Bond.Price), MapPrice));
+            _mapRules.TryAdd("LASTTOPREVPRICE", (nameof(Bond.PercentChange), MappingMethods.MapPropertyDecimal));
+            _mapRules.TryAdd("UPDATETIME + PREVDATE", (nameof(Bond.UpdateTime), MappingMethods.MapUpdateTime));
+            _mapRules.TryAdd("MATDATE", (nameof(Bond.AmortizationDate), MappingMethods.MapPropertyDateTime));
+            _mapRules.TryAdd("FACEVALUE", (nameof(Bond.Nominal), MappingMethods.MapPropertyDecimal));
+            _mapRules.TryAdd("COUPONVALUE", (nameof(Bond.Coupon), MappingMethods.MapPropertyDecimal));
         }
 
         private object MapPrice(string column, List<JsonElement> source, List<string> columns)

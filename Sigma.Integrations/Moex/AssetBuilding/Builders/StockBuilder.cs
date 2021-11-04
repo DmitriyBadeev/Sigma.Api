@@ -13,25 +13,25 @@ namespace Sigma.Integrations.Moex.AssetBuilding.Builders
 {
     public class StockBuilder : AssetBuilder<Stock>
     {
-        private static Dictionary<string, (string propertyName, MappingMethods.MapPropertyFunc mapFunc)> _mapRules = new();
+        private static readonly Dictionary<string, (string propertyName, MappingMethods.MapPropertyFunc mapFunc)> _mapRules = new();
 
         public StockBuilder()
             : base(_mapRules)
         {
-            _mapRules.Add("SECID", (nameof(Stock.Ticket), MappingMethods.MapPropertyString));
-            _mapRules.Add("SHORTNAME", (nameof(Stock.ShortName), MappingMethods.MapPropertyString));
-            _mapRules.Add("SECNAME", (nameof(Stock.MarketFullName), MappingMethods.MapPropertyString));
-            //_mapRules.Add("", nameof(Stock.FullName));
-            _mapRules.Add("LATNAME", (nameof(Stock.LatName), MappingMethods.MapPropertyString));
-            _mapRules.Add("LOTSIZE", (nameof(Stock.LotSize), MappingMethods.MapPropertyInt32));
-            _mapRules.Add("ISSUESIZE", (nameof(Stock.IssueSize), MappingMethods.MapPropertyInt64));
-            _mapRules.Add("PREVLEGALCLOSEPRICE", (nameof(Stock.PrevClosePrice), MappingMethods.MapPropertyDecimal));
-            _mapRules.Add("IssueSize * Price", (nameof(Stock.Capitalization), MapCapitalization));
-            //_mapRules.Add("", nameof(Stock.Description));
-            //_mapRules.Add("", nameof(Stock.Sector));
-            _mapRules.Add("LAST", (nameof(Stock.Price), MappingMethods.MapPropertyDecimal));
-            _mapRules.Add("LASTTOPREVPRICE", (nameof(Stock.PriceChange), MappingMethods.MapPropertyDecimal));
-            _mapRules.Add("UPDATETIME + PREVDATE", (nameof(Stock.UpdateTime), MappingMethods.MapUpdateTime));
+            _mapRules.TryAdd("SECID", (nameof(Stock.Ticket), MappingMethods.MapPropertyString));
+            _mapRules.TryAdd("SHORTNAME", (nameof(Stock.ShortName), MappingMethods.MapPropertyString));
+            _mapRules.TryAdd("SECNAME", (nameof(Stock.MarketFullName), MappingMethods.MapPropertyString));
+            //_mapRules.TryAdd("", nameof(Stock.FullName));
+            _mapRules.TryAdd("LATNAME", (nameof(Stock.LatName), MappingMethods.MapPropertyString));
+            _mapRules.TryAdd("LOTSIZE", (nameof(Stock.LotSize), MappingMethods.MapPropertyInt32));
+            _mapRules.TryAdd("ISSUESIZE", (nameof(Stock.IssueSize), MappingMethods.MapPropertyInt64));
+            _mapRules.TryAdd("PREVLEGALCLOSEPRICE", (nameof(Stock.PrevClosePrice), MappingMethods.MapPropertyDecimal));
+            _mapRules.TryAdd("IssueSize * Price", (nameof(Stock.Capitalization), MapCapitalization));
+            //_mapRules.TryAdd("", nameof(Stock.Description));
+            //_mapRules.TryAdd("", nameof(Stock.Sector));
+            _mapRules.TryAdd("LAST", (nameof(Stock.Price), MappingMethods.MapPropertyDecimal));
+            _mapRules.TryAdd("LASTTOPREVPRICE", (nameof(Stock.PriceChange), MappingMethods.MapPropertyDecimal));
+            _mapRules.TryAdd("UPDATETIME + PREVDATE", (nameof(Stock.UpdateTime), MappingMethods.MapUpdateTime));
         }
 
         private object MapCapitalization(string column, List<JsonElement> source, List<string> columns)
