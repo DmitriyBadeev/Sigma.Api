@@ -17,6 +17,8 @@ namespace Sigma.Core.Entities
 
         public decimal Price { get; set; }
 
+        public decimal Total { get; set; }
+
         public Guid CurrencyId { get; set; }
         
         public Currency Currency { get; set; }

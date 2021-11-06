@@ -4,7 +4,7 @@ using Sigma.Core.Interfaces;
 
 namespace Sigma.Core.Entities
 {
-    public class PortfolioBond : IEntity
+    public class PortfolioBond : IEntity, IPortfolioAsset
     {
         [Key]
         public Guid Id { get; set; }

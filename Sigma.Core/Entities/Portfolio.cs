@@ -19,9 +19,9 @@ namespace Sigma.Core.Entities
 
         public decimal InvestedSum { get; set; }
 
-        public decimal Profit { get; set; }
+        public decimal PaperProfit { get; set; }
 
-        public decimal ProfitPercent { get; set; }
+        public decimal PaperProfitPercent { get; set; }
 
         public decimal DividendProfit { get; set; }
         
