@@ -45,6 +45,9 @@ namespace Sigma.Services.Services.SynchronizationService
                 .ThenInclude(o => o.Currency)
                 .Include(p => p.CurrencyOperations)
                 .ThenInclude(o => o.Currency)
+                .Include(p => p.PortfolioStocks)
+                .Include(p => p.PortfolioFonds)
+                .Include(p => p.PortfolioBonds)
                 .AsSingleQuery()
                 .ToList();
 
@@ -62,6 +65,9 @@ namespace Sigma.Services.Services.SynchronizationService
                 .ThenInclude(o => o.Currency)
                 .Include(p => p.CurrencyOperations)
                 .ThenInclude(o => o.Currency)
+                .Include(p => p.PortfolioStocks)
+                .Include(p => p.PortfolioFonds)
+                .Include(p => p.PortfolioBonds)
                 .AsSingleQuery()
                 .FirstOrDefault(p => p.Id == portfolioId);
 
@@ -102,14 +108,32 @@ namespace Sigma.Services.Services.SynchronizationService
             portfolio.RubBalance = portfolioParameters.RubBalance;
             portfolio.EuroBalance = portfolioParameters.EuroBalance;
 
-            portfolio.PortfolioStocks = portfolioParameters.Stocks;
-            portfolio.PortfolioFonds = portfolioParameters.Fonds;
-            portfolio.PortfolioBonds = portfolioParameters.Bonds;
-            
+            RemoveAllPortfolioAssets(portfolio);
+            SetPortfolioIdInAssets(portfolioParameters, portfolio.Id);
+
             _logger.LogInformation($"Новый портфель: {portfolio}");
 
             _context.Portfolios.Update(portfolio);
+
+            _context.PortfolioStocks.AddRange(portfolioParameters.Stocks);
+            _context.PortfolioFonds.AddRange(portfolioParameters.Fonds);
+            _context.PortfolioBonds.AddRange(portfolioParameters.Bonds);
+            
             await _context.SaveChangesAsync();
+        }
+
+        private void RemoveAllPortfolioAssets(Portfolio portfolio)
+        {
+            if (portfolio.PortfolioStocks != null) _context.PortfolioStocks.RemoveRange(portfolio.PortfolioStocks);
+            if (portfolio.PortfolioFonds != null) _context.PortfolioFonds.RemoveRange(portfolio.PortfolioFonds);
+            if (portfolio.PortfolioBonds != null) _context.PortfolioBonds.RemoveRange(portfolio.PortfolioBonds);
+        }
+
+        private void SetPortfolioIdInAssets(PortfolioParameters portfolioParameters, Guid portfolioId)
+        {
+            portfolioParameters.Stocks.ForEach(s => { s.PortfolioId = portfolioId; });
+            portfolioParameters.Fonds.ForEach(s => { s.PortfolioId = portfolioId; });
+            portfolioParameters.Bonds.ForEach(s => { s.PortfolioId = portfolioId; });
         }
     }
 }

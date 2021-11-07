@@ -24,8 +24,12 @@ namespace Sigma.Services.Services
             var portfolios = await _context.Portfolios
                 .Where(p => portfolioIds.Contains(p.Id))
                 .Include(p => p.PortfolioStocks)
+                .ThenInclude(s => s.Stock)
                 .Include(p => p.PortfolioFonds)
+                .ThenInclude(f => f.Fond)
                 .Include(p => p.PortfolioBonds)
+                .ThenInclude(b => b.Bond)
+                .AsSingleQuery()
                 .ToListAsync();
 
             if (portfolios.Count == 0)
@@ -33,7 +37,13 @@ namespace Sigma.Services.Services
                 return null;
             }
 
-            var aggregatedPortfolio = new Portfolio();
+            var aggregatedPortfolio = new Portfolio
+            {
+                PortfolioStocks = new List<PortfolioStock>(),
+                PortfolioFonds = new List<PortfolioFond>(),
+                PortfolioBonds = new List<PortfolioBond>()
+            };
+            
             foreach (var portfolio in portfolios)
             {
                 aggregatedPortfolio.Cost += portfolio.Cost;
@@ -49,9 +59,9 @@ namespace Sigma.Services.Services
                 aggregatedPortfolio.PaperProfitPercent =
                     ArithmeticHelper.SafeDivFunc(aggregatedPortfolio.PaperProfit, aggregatedPortfolio.InvestedSum);
                 
-                aggregatedPortfolio.PortfolioStocks?.AddRange(portfolio.PortfolioStocks);
-                aggregatedPortfolio.PortfolioFonds?.AddRange(portfolio.PortfolioFonds);
-                aggregatedPortfolio.PortfolioBonds?.AddRange(portfolio.PortfolioBonds);
+                aggregatedPortfolio.PortfolioStocks.AddRange(portfolio.PortfolioStocks);
+                aggregatedPortfolio.PortfolioFonds.AddRange(portfolio.PortfolioFonds);
+                aggregatedPortfolio.PortfolioBonds.AddRange(portfolio.PortfolioBonds);
             }
 
             return aggregatedPortfolio;
