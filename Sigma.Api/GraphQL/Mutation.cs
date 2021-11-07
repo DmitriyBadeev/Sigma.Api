@@ -9,6 +9,7 @@ using Sigma.Api.Attributes;
 using Sigma.Api.Mediator.Operations;
 using Sigma.Api.Mediator.Portfolio;
 using Sigma.Api.Validations.Interfaces;
+using Sigma.Services.Interfaces;
 
 namespace Sigma.Api.GraphQL
 {
@@ -58,9 +59,11 @@ namespace Sigma.Api.GraphQL
             [ScopedService] FinanceDbContext context, 
             [Service] IMediator mediator,
             [Service] IValidationService validationService,
+            [Service] ISynchronizationService synchronizationService,
             [UserId] string userId)
         {
-            return await mediator.Send(new CreateAssetOperation.Command(input, context, validationService, userId));
+            return await mediator.Send(
+                new CreateAssetOperation.Command(input, context, validationService, userId, synchronizationService));
         }
         
         [Authorize]
@@ -70,9 +73,11 @@ namespace Sigma.Api.GraphQL
             [ScopedService] FinanceDbContext context, 
             [Service] IMediator mediator,
             [Service] IValidationService validationService,
+            [Service] ISynchronizationService synchronizationService,
             [UserId] string userId)
         {
-            return await mediator.Send(new RemoveAssetOperation.Command(assetOperationId, context, validationService, userId));
+            return await mediator.Send(
+                new RemoveAssetOperation.Command(assetOperationId, context, validationService, userId, synchronizationService));
         }
         
         [Authorize]
@@ -82,9 +87,11 @@ namespace Sigma.Api.GraphQL
             [ScopedService] FinanceDbContext context, 
             [Service] IMediator mediator,
             [Service] IValidationService validationService,
+            [Service] ISynchronizationService synchronizationService,
             [UserId] string userId)
         {
-            return await mediator.Send(new CreateCurrencyOperation.Command(input, context, validationService, userId));
+            return await mediator.Send(
+                new CreateCurrencyOperation.Command(input, context, validationService, userId, synchronizationService));
         }
 
         [Authorize]
@@ -94,9 +101,11 @@ namespace Sigma.Api.GraphQL
             [ScopedService] FinanceDbContext context, 
             [Service] IMediator mediator,
             [Service] IValidationService validationService,
+            [Service] ISynchronizationService synchronizationService,
             [UserId] string userId)
         {
-            return await mediator.Send(new RemoveCurrencyOperation.Command(currencyOperationId, context, validationService, userId));
+            return await mediator.Send(
+                new RemoveCurrencyOperation.Command(currencyOperationId, context, validationService, userId, synchronizationService));
         }
 
 

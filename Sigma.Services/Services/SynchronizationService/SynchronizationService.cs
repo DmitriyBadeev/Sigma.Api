@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
@@ -26,7 +27,6 @@ namespace Sigma.Services.Services.SynchronizationService
     {
         private readonly FinanceDbContext _context;
         private readonly IMarketDataProvider _marketDataProvider;
-
         public SynchronizationService(FinanceDbContext context, IMarketDataProvider marketDataProvider)
         {
             _context = context;
@@ -35,9 +35,6 @@ namespace Sigma.Services.Services.SynchronizationService
 
         public async Task SyncPortfolios()
         {
-            var currencyOperationHandler = new CurrencyOperationHandler();
-            var assetOperationHandler = new AssetOperationHandler(_marketDataProvider);
-            
             var portfolios = _context.Portfolios
                 .Include(p => p.AssetOperations)
                 .ThenInclude(o => o.Currency)
@@ -45,18 +42,45 @@ namespace Sigma.Services.Services.SynchronizationService
                 .ThenInclude(o => o.Currency)
                 .AsSingleQuery()
                 .ToList();
-            
-            var initParameters = new PortfolioParameters();
-            
+
             foreach (var portfolio in portfolios)
             {
-                var currencyOperations = portfolio.CurrencyOperations;
-                var assetOperations = portfolio.AssetOperations;
-                
-                var parametersWithCurrencyOperations = currencyOperationHandler.Handle(initParameters, currencyOperations);
-                var resultParameters = assetOperationHandler.Handle(parametersWithCurrencyOperations, assetOperations);
-                await UpdatePortfolioByParameters(portfolio, resultParameters);
+                var newPortfolioParameters = GetNewPortfolioParameters(portfolio);
+                await UpdatePortfolioByParameters(portfolio, newPortfolioParameters);
             }
+        }
+
+        public async Task SyncPortfolio(Guid portfolioId)
+        {
+            var portfolio = _context.Portfolios
+                .Include(p => p.AssetOperations)
+                .ThenInclude(o => o.Currency)
+                .Include(p => p.CurrencyOperations)
+                .ThenInclude(o => o.Currency)
+                .AsSingleQuery()
+                .FirstOrDefault(p => p.Id == portfolioId);
+
+            if (portfolio == null)
+            {
+                throw new ArgumentException("Портфель не найден");
+            }
+            
+            var newPortfolioParameters = GetNewPortfolioParameters(portfolio);
+            await UpdatePortfolioByParameters(portfolio, newPortfolioParameters);
+        }
+
+        private PortfolioParameters GetNewPortfolioParameters(Portfolio portfolio)
+        {
+            var initParameters = new PortfolioParameters();
+            
+            var currencyOperationHandler = new CurrencyOperationHandler();
+            var assetOperationHandler = new AssetOperationHandler(_marketDataProvider);
+            
+            var currencyOperations = portfolio.CurrencyOperations;
+            var assetOperations = portfolio.AssetOperations;
+            
+            var parametersWithCurrencyOperations = currencyOperationHandler.Handle(initParameters, currencyOperations);
+            return assetOperationHandler.Handle(parametersWithCurrencyOperations, assetOperations);
         }
 
         private async Task UpdatePortfolioByParameters(Portfolio portfolio, PortfolioParameters portfolioParameters)
