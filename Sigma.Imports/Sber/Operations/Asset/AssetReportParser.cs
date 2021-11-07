@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using Sigma.Core.Entities;
-using Sigma.Excel.SberReport.Common.MappingMethods;
+using Sigma.Imports.Sber.Common.MappingMethods;
 
-namespace Sigma.Excel.SberReport.Operations.Asset
+namespace Sigma.Imports.Sber.Operations.Asset
 {
     public class AssetReportParser : ReportParser<AssetOperation>
     {

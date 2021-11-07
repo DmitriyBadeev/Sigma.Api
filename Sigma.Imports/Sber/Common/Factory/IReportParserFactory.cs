@@ -1,6 +1,6 @@
 ﻿using Sigma.Core.Interfaces;
 
-namespace Sigma.Excel.SberReport.Common.Factory
+namespace Sigma.Imports.Sber.Common.Factory
 {
     public interface IReportParserFactory
     {

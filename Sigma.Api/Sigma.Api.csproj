@@ -23,6 +23,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\Sigma.Imports\Sigma.Imports.csproj" />
       <ProjectReference Include="..\Sigma.Infrastructure\Sigma.Infrastructure.csproj" />
       <ProjectReference Include="..\Sigma.Services\Sigma.Services.csproj" />
     </ItemGroup>

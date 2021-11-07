@@ -4,7 +4,7 @@ using Sigma.Core.Enums;
 using Sigma.Core.Interfaces;
 using Sigma.Infrastructure;
 
-namespace Sigma.Excel.SberReport.Common.MappingMethods
+namespace Sigma.Imports.Sber.Common.MappingMethods
 {
     public static class ReportMapping
     {

@@ -5,8 +5,10 @@ using System.Threading.Tasks;
 using HotChocolate;
 using HotChocolate.AspNetCore.Authorization;
 using HotChocolate.Data;
+using HotChocolate.Types;
 using MediatR;
 using Sigma.Api.Attributes;
+using Sigma.Api.Mediator.ExcelReports;
 using Sigma.Api.Mediator.Operations;
 using Sigma.Api.Validations.Interfaces;
 using Sigma.Core.Entities;
@@ -240,6 +242,30 @@ namespace Sigma.Api.GraphQL
         public string SecretData()
         {
             return "Secret";
+        }
+
+        [Authorize]
+        [UseDbContext(typeof(FinanceDbContext))]
+        public async Task<List<AssetOperation>> ParseAssetReport(
+            IFile report,
+            [ScopedService] FinanceDbContext context,
+            [Service] IMediator mediator,
+            [Service] IValidationService validationService,
+            [UserId] string userId)
+        {
+            return await mediator.Send(new ParseOperationReport<AssetOperation>.Command(report, context, validationService, userId));
+        }
+
+        [Authorize]
+        [UseDbContext(typeof(FinanceDbContext))]
+        public async Task<List<CurrencyOperation>> ParseCurrencyReport(
+            IFile report,
+            [ScopedService] FinanceDbContext context,
+            [Service] IMediator mediator,
+            [Service] IValidationService validationService,
+            [UserId] string userId)
+        {
+            return await mediator.Send(new ParseOperationReport<CurrencyOperation>.Command(report, context, validationService, userId));
         }
     }
 }

@@ -5,10 +5,10 @@ using System.Linq;
 using NPOI.SS.UserModel;
 using NPOI.XSSF.UserModel;
 using Sigma.Core.Interfaces;
-using Sigma.Excel.SberReport.Common.MappingMethods;
+using Sigma.Imports.Sber.Common.MappingMethods;
 using Sigma.Infrastructure;
 
-namespace Sigma.Excel.SberReport
+namespace Sigma.Imports.Sber
 {
     public class ReportParser<TOperation> : IReportParser<TOperation>
         where TOperation : IOperation

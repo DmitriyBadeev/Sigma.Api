@@ -8,6 +8,6 @@ namespace Sigma.Core.Interfaces
 {
     public interface IOperation
     {
-
+        public Guid PortfolioId { get; set; }
     }
 }

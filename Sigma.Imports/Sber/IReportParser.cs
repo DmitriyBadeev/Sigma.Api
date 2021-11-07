@@ -3,7 +3,7 @@ using System.IO;
 using Sigma.Core.Interfaces;
 using Sigma.Infrastructure;
 
-namespace Sigma.Excel.SberReport
+namespace Sigma.Imports.Sber
 {
     public interface IReportParser<TOperation>
         where TOperation: IOperation

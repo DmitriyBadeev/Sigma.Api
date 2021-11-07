@@ -1,10 +1,10 @@
 ﻿using System;
 using Sigma.Core.Entities;
 using Sigma.Core.Interfaces;
-using Sigma.Excel.SberReport.Operations.Asset;
-using Sigma.Excel.SberReport.Operations.Currency;
+using Sigma.Imports.Sber.Operations.Asset;
+using Sigma.Imports.Sber.Operations.Currency;
 
-namespace Sigma.Excel.SberReport.Common.Factory
+namespace Sigma.Imports.Sber.Common.Factory
 {
     public class ReportParserFactory : IReportParserFactory
     {

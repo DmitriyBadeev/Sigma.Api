@@ -5,10 +5,10 @@ using NPOI.SS.UserModel;
 using Sigma.Core.Entities;
 using Sigma.Core.Enums;
 using Sigma.Core.Interfaces;
-using Sigma.Excel.SberReport.Common.MappingMethods;
+using Sigma.Imports.Sber.Common.MappingMethods;
 using Sigma.Infrastructure;
 
-namespace Sigma.Excel.SberReport.Operations.Currency
+namespace Sigma.Imports.Sber.Operations.Currency
 {
     public class CurrencyReportParser : ReportParser<CurrencyOperation>
     {
