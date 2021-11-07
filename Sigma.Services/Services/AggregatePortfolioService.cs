@@ -28,6 +28,11 @@ namespace Sigma.Services.Services
                 .Include(p => p.PortfolioBonds)
                 .ToListAsync();
 
+            if (portfolios.Count == 0)
+            {
+                return null;
+            }
+
             var aggregatedPortfolio = new Portfolio();
             foreach (var portfolio in portfolios)
             {
@@ -44,9 +49,9 @@ namespace Sigma.Services.Services
                 aggregatedPortfolio.PaperProfitPercent =
                     ArithmeticHelper.SafeDivFunc(aggregatedPortfolio.PaperProfit, aggregatedPortfolio.InvestedSum);
                 
-                aggregatedPortfolio.PortfolioStocks.AddRange(portfolio.PortfolioStocks);
-                aggregatedPortfolio.PortfolioFonds.AddRange(portfolio.PortfolioFonds);
-                aggregatedPortfolio.PortfolioBonds.AddRange(portfolio.PortfolioBonds);
+                aggregatedPortfolio.PortfolioStocks?.AddRange(portfolio.PortfolioStocks);
+                aggregatedPortfolio.PortfolioFonds?.AddRange(portfolio.PortfolioFonds);
+                aggregatedPortfolio.PortfolioBonds?.AddRange(portfolio.PortfolioBonds);
             }
 
             return aggregatedPortfolio;
