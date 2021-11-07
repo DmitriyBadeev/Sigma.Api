@@ -65,7 +65,7 @@ namespace Sigma.Imports.Sber.Operations.Currency
                 var value = source.StringCellValue;
 
                 var asset = (IAsset)context.Stocks.FirstOrDefault(x => value.ToLower().Contains(x.ShortName.ToLower())) ??
-                                   context.Bonds.FirstOrDefault(x => value.ToLower().Contains(x.ShortName.ToLower()));
+                                   context.Bonds.FirstOrDefault(x => value.ToLower().Contains(x.ShortName.Replace("ОФЗ ", "").ToLower()));
 
                 return asset?.Ticket;
             }
@@ -77,8 +77,7 @@ namespace Sigma.Imports.Sber.Operations.Currency
         {
             var currencyOperation = (CurrencyOperation)operation;
 
-            if (currencyOperation.OperationType == OperationType.CouponPayment
-                || currencyOperation.OperationType == OperationType.DividendPayment)
+            if (currencyOperation.OperationType == OperationType.DividendPayment)
             {
                 var value = source.StringCellValue;
 
@@ -91,6 +90,11 @@ namespace Sigma.Imports.Sber.Operations.Currency
                 }
 
                 return int.Parse(splitValue[indexOfAmount - 1]);
+            }
+
+            if (currencyOperation.OperationType == OperationType.CouponPayment)
+            {
+                // TODO: Добавить парсинг amount на зачисление купона
             }
 
             return null;
