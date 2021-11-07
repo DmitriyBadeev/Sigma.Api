@@ -1,4 +1,5 @@
 ﻿using System;
+using Microsoft.AspNetCore.Http;
 using Sigma.Core.Enums;
 
 namespace Sigma.Api.GraphQL

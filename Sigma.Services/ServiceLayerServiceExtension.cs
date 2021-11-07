@@ -9,6 +9,7 @@ namespace Sigma.Services
         public static IServiceCollection AddServiceLayerServices(this IServiceCollection services)
         {
             services.AddScoped<IRefreshDataService, RefreshDataService>();
+            services.AddScoped<IExcelService, ExcelService>();
 
             return services;
         }

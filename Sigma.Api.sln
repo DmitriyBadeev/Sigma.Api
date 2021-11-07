@@ -13,7 +13,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sigma.Integrations", "Sigma
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InvestIn.Hangfire", "InvestIn.Hangfire\InvestIn.Hangfire.csproj", "{A872E62B-DD01-40B4-BCAA-327E60C0ACB2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sigma.Services", "Sigma.Services\Sigma.Services.csproj", "{2F991BED-F969-4FCB-9BD0-4C411726FF82}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sigma.Services", "Sigma.Services\Sigma.Services.csproj", "{2F991BED-F969-4FCB-9BD0-4C411726FF82}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sigma.Excel", "Sigma.Excel\Sigma.Excel.csproj", "{873C4F6C-90DB-462C-ACE7-E35FD5387E9F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +47,10 @@ Global
 		{2F991BED-F969-4FCB-9BD0-4C411726FF82}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2F991BED-F969-4FCB-9BD0-4C411726FF82}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2F991BED-F969-4FCB-9BD0-4C411726FF82}.Release|Any CPU.Build.0 = Release|Any CPU
+		{873C4F6C-90DB-462C-ACE7-E35FD5387E9F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{873C4F6C-90DB-462C-ACE7-E35FD5387E9F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{873C4F6C-90DB-462C-ACE7-E35FD5387E9F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{873C4F6C-90DB-462C-ACE7-E35FD5387E9F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

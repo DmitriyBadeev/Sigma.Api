@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace Sigma.Core.Interfaces
 {
-    public interface IAsset
+    public interface IOperation
     {
-        public string Ticket { get; set; }
-        public string ShortName { get; set; }
+
     }
 }

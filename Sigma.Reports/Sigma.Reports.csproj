@@ -5,8 +5,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Sigma.Excel\Sigma.Excel.csproj" />
-    <ProjectReference Include="..\Sigma.Integrations\Sigma.Integrations.csproj" />
+    <ProjectReference Include="..\Sigma.Infrastructure\Sigma.Infrastructure.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="OperationParsers\" />
   </ItemGroup>
 
 </Project>

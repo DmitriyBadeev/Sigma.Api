@@ -5,7 +5,7 @@ using Sigma.Core.Interfaces;
 
 namespace Sigma.Core.Entities
 {
-    public class AssetOperation : IEntity
+    public class AssetOperation : IEntity, IOperation
     {
         [Key]
         public Guid Id { get; set; }
