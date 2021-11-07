@@ -7,9 +7,9 @@ using Sigma.Imports.Sber.Operations.Currency;
 
 namespace Sigma.Imports
 {
-    public static class ExcelServiceExtension
+    public static class ImportServiceExtension
     {
-        public static IServiceCollection AddExcelServices(this IServiceCollection services)
+        public static IServiceCollection AddImportServices(this IServiceCollection services)
         {
             // factory
             services.AddTransient<IReportParserFactory, ReportParserFactory>();

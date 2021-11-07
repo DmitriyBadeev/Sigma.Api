@@ -39,7 +39,7 @@ namespace Sigma.Api
             services.AddFinanceInfrastructureServices(connectionString);
 
             services.AddIntegrationsServices();
-            services.AddExcelServices();
+            services.AddImportServices();
             services.AddServiceLayerServices();
             services.AddValidationService();
 

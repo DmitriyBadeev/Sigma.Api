@@ -5,7 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Sigma.Excel\Sigma.Imports.csproj" />
     <ProjectReference Include="..\Sigma.Imports\Sigma.Imports.csproj" />
     <ProjectReference Include="..\Sigma.Integrations\Sigma.Integrations.csproj" />
   </ItemGroup>
