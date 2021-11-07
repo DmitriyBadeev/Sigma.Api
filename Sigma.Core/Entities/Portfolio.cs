@@ -49,5 +49,18 @@ namespace Sigma.Core.Entities
         public List<PortfolioFond> PortfolioFonds { get; set; }
         
         public List<PortfolioBond> PortfolioBonds { get; set; }
+
+        public override string ToString()
+        {
+            return $"Cost: {Cost}, " +
+                   $"InvestedSum: {InvestedSum}, " +
+                   $"PaperProfit: {PaperProfit}, " +
+                   $"PaperProfitPercent: {PaperProfitPercent}, " +
+                   $"DividendProfit: {DividendProfit}, " +
+                   $"DividendProfitPercent: {DividendProfitPercent}, " +
+                   $"RubBalance: {RubBalance}, " +
+                   $"DollarBalance: {DollarBalance}, " +
+                   $"EuroBalance: {EuroBalance}";
+        }
     }
 }

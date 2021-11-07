@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using Sigma.Core.Entities;
 using Sigma.Infrastructure;
 using Sigma.Services.Interfaces;
@@ -27,10 +28,14 @@ namespace Sigma.Services.Services.SynchronizationService
     {
         private readonly FinanceDbContext _context;
         private readonly IMarketDataProvider _marketDataProvider;
-        public SynchronizationService(FinanceDbContext context, IMarketDataProvider marketDataProvider)
+        private readonly ILogger<SynchronizationService> _logger;
+
+        public SynchronizationService(FinanceDbContext context, IMarketDataProvider marketDataProvider, 
+            ILogger<SynchronizationService> logger)
         {
             _context = context;
             _marketDataProvider = marketDataProvider;
+            _logger = logger;
         }
 
         public async Task SyncPortfolios()
@@ -66,6 +71,8 @@ namespace Sigma.Services.Services.SynchronizationService
             }
             
             var newPortfolioParameters = GetNewPortfolioParameters(portfolio);
+            _logger.LogInformation($"Новые параметры: {newPortfolioParameters}");
+            
             await UpdatePortfolioByParameters(portfolio, newPortfolioParameters);
         }
 
@@ -98,6 +105,8 @@ namespace Sigma.Services.Services.SynchronizationService
             portfolio.PortfolioStocks = portfolioParameters.Stocks;
             portfolio.PortfolioFonds = portfolioParameters.Fonds;
             portfolio.PortfolioBonds = portfolioParameters.Bonds;
+            
+            _logger.LogInformation($"Новый портфель: {portfolio}");
 
             _context.Portfolios.Update(portfolio);
             await _context.SaveChangesAsync();
