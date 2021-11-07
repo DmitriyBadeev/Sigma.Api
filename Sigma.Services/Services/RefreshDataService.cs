@@ -5,7 +5,7 @@ using Sigma.Infrastructure;
 using Sigma.Integrations.Moex;
 using Sigma.Services.Interfaces;
 
-namespace Sigma.Services.Service
+namespace Sigma.Services.Services
 {
     public class RefreshDataService : IRefreshDataService
     {

@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using Sigma.Core.Entities;
-
-namespace Sigma.Core.Enums
+﻿namespace Sigma.Core.Enums
 {
     public enum AssetAction
     {

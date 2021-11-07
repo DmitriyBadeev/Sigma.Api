@@ -13,7 +13,27 @@ namespace Sigma.Core.Entities
         public string UserId { get; set; }
         
         public string Name { get; set; }
+        
 
+        public decimal Cost { get; set; }
+
+        public decimal InvestedSum { get; set; }
+
+        public decimal PaperProfit { get; set; }
+
+        public decimal PaperProfitPercent { get; set; }
+
+        public decimal DividendProfit { get; set; }
+        
+        public decimal DividendProfitPercent { get; set; }
+
+        public decimal RubBalance { get; set; }
+
+        public decimal DollarBalance { get; set; }
+
+        public decimal EuroBalance { get; set; }
+        
+        
         public Guid PortfolioTypeId { get; set; }
 
         public PortfolioType PortfolioType { get; set; }
@@ -29,5 +49,18 @@ namespace Sigma.Core.Entities
         public List<PortfolioFond> PortfolioFonds { get; set; }
         
         public List<PortfolioBond> PortfolioBonds { get; set; }
+
+        public override string ToString()
+        {
+            return $"Cost: {Cost}, " +
+                   $"InvestedSum: {InvestedSum}, " +
+                   $"PaperProfit: {PaperProfit}, " +
+                   $"PaperProfitPercent: {PaperProfitPercent}, " +
+                   $"DividendProfit: {DividendProfit}, " +
+                   $"DividendProfitPercent: {DividendProfitPercent}, " +
+                   $"RubBalance: {RubBalance}, " +
+                   $"DollarBalance: {DollarBalance}, " +
+                   $"EuroBalance: {EuroBalance}";
+        }
     }
 }

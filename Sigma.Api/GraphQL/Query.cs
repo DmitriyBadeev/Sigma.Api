@@ -10,10 +10,12 @@ using MediatR;
 using Sigma.Api.Attributes;
 using Sigma.Api.Mediator.ExcelReports;
 using Sigma.Api.Mediator.Operations;
+using Sigma.Api.Mediator.Portfolios;
 using Sigma.Api.Validations.Interfaces;
 using Sigma.Core.Entities;
 using Sigma.Core.Enums;
 using Sigma.Infrastructure;
+using Sigma.Services.Interfaces;
 
 namespace Sigma.Api.GraphQL
 {
@@ -93,6 +95,18 @@ namespace Sigma.Api.GraphQL
         public string[] GetCurrencyOperationTypes()
         {
             return Enum.GetNames<OperationType>();
+        }
+        
+        [Authorize]
+        [UseDbContext(typeof(FinanceDbContext))]
+        public async Task<DefaultPayload<Portfolio>> AggregatePortfolios(
+            [Service] IAggregatePortfolioService aggregatePortfolioService,
+            [Service] IValidationService validationService,
+            [Service] IMediator mediator,
+            [UserId] string userId, 
+            IEnumerable<Guid> portfolioIds)
+        {
+            return await mediator.Send(new GetAggregatePortfolio.Query(validationService, portfolioIds, aggregatePortfolioService, userId));
         }
 
         [Authorize]
