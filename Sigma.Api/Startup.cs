@@ -1,9 +1,11 @@
 using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
+using GraphQL.Server.Ui.Altair;
 using GraphQL.Server.Ui.Voyager;
 using HotChocolate.AspNetCore;
 using HotChocolate.Execution;
+using HotChocolate.Types;
 using Sigma.Infrastructure.Services;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
@@ -15,6 +17,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Logging;
 using Sigma.Api.GraphQL;
 using Sigma.Api.Validations;
+using Sigma.Imports;
 using Sigma.Integrations;
 using Sigma.Services;
 
@@ -34,14 +37,18 @@ namespace Sigma.Api
             var connectionString = Configuration.GetConnectionString("DefaultConnection");
             
             services.AddFinanceInfrastructureServices(connectionString);
+
             services.AddIntegrationsServices();
+            services.AddExcelServices();
             services.AddServiceLayerServices();
             services.AddValidationService();
+
             services.AddCors();
             services.AddMediatR(typeof(Startup));
             
             services
                 .AddGraphQLServer()
+                .AddType<UploadType>()
                 .AddAuthorization()
                 .AddHttpRequestInterceptor<HttpRequestInterceptor>()
                 .AddQueryType<Query>()
@@ -80,6 +87,11 @@ namespace Sigma.Api
             app.UseEndpoints(endpoints => { endpoints.MapGraphQL(); });
             
             app.UseGraphQLVoyager(new VoyagerOptions()
+            {
+                GraphQLEndPoint = "/graphql"
+            });
+
+            app.UseGraphQLAltair(new AltairOptions()
             {
                 GraphQLEndPoint = "/graphql"
             });

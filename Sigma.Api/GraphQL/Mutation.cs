@@ -1,14 +1,19 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using HotChocolate;
 using HotChocolate.AspNetCore.Authorization;
 using HotChocolate.Data;
+using HotChocolate.Types;
 using Sigma.Infrastructure;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 using Sigma.Api.Attributes;
+using Sigma.Api.Mediator.ExcelReports;
 using Sigma.Api.Mediator.Operations;
 using Sigma.Api.Mediator.Portfolio;
 using Sigma.Api.Validations.Interfaces;
+using Sigma.Core.Entities;
 using Sigma.Services.Interfaces;
 
 namespace Sigma.Api.GraphQL
@@ -108,6 +113,28 @@ namespace Sigma.Api.GraphQL
                 new RemoveCurrencyOperation.Command(currencyOperationId, context, validationService, userId, synchronizationService));
         }
 
+        [Authorize]
+        [UseDbContext(typeof(FinanceDbContext))]
+        public async Task<DefaultPayload> CreateAssetOperations(
+            List<AssetOperationInput> assetOperations,
+            [ScopedService] FinanceDbContext context,
+            [Service] IMediator mediator,
+            [Service] IValidationService validationService,
+            [UserId] string userId)
+        {
+            return await mediator.Send(new CreateAssetOperations.Command(assetOperations, context, validationService, userId));
+        }
 
+        [Authorize]
+        [UseDbContext(typeof(FinanceDbContext))]
+        public async Task<DefaultPayload> CreateCurrencyOperations(
+            List<CurrencyOperationInput> currencyOperations,
+            [ScopedService] FinanceDbContext context,
+            [Service] IMediator mediator,
+            [Service] IValidationService validationService,
+            [UserId] string userId)
+        {
+            return await mediator.Send(new CreateCurrencyOperations.Command(currencyOperations, context, validationService, userId));
+        }
     }
 }
