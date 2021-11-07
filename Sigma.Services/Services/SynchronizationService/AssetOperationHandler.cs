@@ -68,13 +68,12 @@ namespace Sigma.Services.Services.SynchronizationService
             var paperCosts = parameters.Cost;
             var balance = parameters.RubBalance;
             var paperProfit = parameters.Profit;
-            var paperProfitPercent = parameters.ProfitPercent;
+            
             foreach (var portfolioStock in parameters.Stocks)
             {
                 paperCosts += portfolioStock.Cost;
                 balance -= portfolioStock.BoughtPrice;
                 paperProfit += portfolioStock.PaperProfit;
-                paperProfitPercent = paperProfit / parameters.InvestedSum;
             }
 
             foreach (var portfolioFond in parameters.Fonds)
@@ -82,7 +81,6 @@ namespace Sigma.Services.Services.SynchronizationService
                 paperCosts += portfolioFond.Cost;
                 balance -= portfolioFond.BoughtPrice;
                 paperProfit += portfolioFond.PaperProfit;
-                paperProfitPercent = paperProfit / parameters.InvestedSum;
             }
             
             foreach (var portfolioBond in parameters.Bonds)
@@ -90,14 +88,13 @@ namespace Sigma.Services.Services.SynchronizationService
                 paperCosts += portfolioBond.Cost;
                 balance -= portfolioBond.BoughtPrice;
                 paperProfit += portfolioBond.PaperProfit;
-                paperProfitPercent = paperProfit / parameters.InvestedSum;
             }
 
             return parameters with
             {
                 Cost = paperCosts + balance,
                 Profit = paperProfit,
-                ProfitPercent = paperProfitPercent,
+                ProfitPercent = SafeDivFunc(paperProfit, parameters.InvestedSum),
                 RubBalance = balance
             };
         }
@@ -107,13 +104,12 @@ namespace Sigma.Services.Services.SynchronizationService
             var paperCosts = parameters.Cost - parameters.RubBalance;
             var balance = parameters.RubBalance;
             var paperProfit = parameters.Profit;
-            var paperProfitPercent = parameters.ProfitPercent;
+            
             foreach (var portfolioStock in parameters.Stocks)
             {
                 paperCosts -= portfolioStock.Cost;
                 balance += portfolioStock.BoughtPrice;
                 paperProfit -= portfolioStock.PaperProfit;
-                paperProfitPercent = paperProfit / parameters.InvestedSum;
             }
 
             foreach (var portfolioFond in parameters.Fonds)
@@ -121,7 +117,6 @@ namespace Sigma.Services.Services.SynchronizationService
                 paperCosts -= portfolioFond.Cost;
                 balance += portfolioFond.BoughtPrice;
                 paperProfit -= portfolioFond.PaperProfit;
-                paperProfitPercent = paperProfit / parameters.InvestedSum;
             }
             
             foreach (var portfolioBond in parameters.Bonds)
@@ -129,14 +124,13 @@ namespace Sigma.Services.Services.SynchronizationService
                 paperCosts -= portfolioBond.Cost;
                 balance += portfolioBond.BoughtPrice;
                 paperProfit -= portfolioBond.PaperProfit;
-                paperProfitPercent = paperProfit / parameters.InvestedSum;
             }
 
             return parameters with
             {
                 Cost = paperCosts,
                 Profit = paperProfit,
-                ProfitPercent = paperProfitPercent,
+                ProfitPercent = SafeDivFunc(paperProfit, parameters.InvestedSum),
                 RubBalance = balance
             };
         }

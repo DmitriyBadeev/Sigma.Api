@@ -24,6 +24,16 @@ namespace Sigma.Api.Validations
 
         public IValidationError FirstError => _validationErrors.FirstOrDefault();
 
+        public ValidationService PortfoliosBelongUser(IEnumerable<Guid> portfolioIds, string userId)
+        {
+            foreach (var portfolioId in portfolioIds)
+            {
+                PortfolioBelongsUser(portfolioId, userId);
+            }
+
+            return this;
+        }
+
         public ValidationService PortfolioBelongsUser(Guid? portfolioId, string userId)
         {
             var portfolio = _context.Portfolios.Find(portfolioId);
@@ -43,6 +53,16 @@ namespace Sigma.Api.Validations
             if (entity is null)
             {
                 _validationErrors.Add( new NotExistError());
+            }
+
+            return this;
+        }
+
+        public ValidationService CheckExist<T>(IEnumerable<Guid> ids) where T : class, IEntity
+        {
+            foreach (var id in ids)
+            {
+                CheckExist<T>(id);
             }
 
             return this;
