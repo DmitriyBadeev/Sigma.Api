@@ -111,116 +111,6 @@ namespace Sigma.Api.GraphQL
 
         [Authorize]
         [UseDbContext(typeof(FinanceDbContext))]
-        public async Task<DefaultPayload<decimal>> AggregateBalance(
-            [ScopedService] FinanceDbContext context, 
-            [Service] IMediator mediator, 
-            [UserId] string userId, 
-            IEnumerable<Guid> portfolioIds)
-        {
-            return new DefaultPayload<decimal>(true);
-        }
-        
-        [Authorize]
-        [UseDbContext(typeof(FinanceDbContext))]
-        public async Task<DefaultPayload<decimal>> AggregateInvestSum(
-            [ScopedService] FinanceDbContext context, 
-            [Service] IMediator mediator, 
-            [UserId] string userId, 
-            IEnumerable<Guid> portfolioIds)
-        {
-            return new DefaultPayload<decimal>(true);
-        }
-
-        [Authorize]
-        [UseDbContext(typeof(FinanceDbContext))]
-        public async Task<DefaultPayload<List<PaymentData>>> AggregateFuturePayments(
-            [ScopedService] FinanceDbContext context, 
-            [Service] IMediator mediator, 
-            [UserId] string userId, 
-            IEnumerable<Guid> portfolioIds)
-        {
-            return new DefaultPayload<List<PaymentData>>(true);
-        }
-        
-        [Authorize]
-        [UseDbContext(typeof(FinanceDbContext))]
-        public async Task<DefaultPayload<ValuePercent>> AggregatePortfolioPaymentProfit(
-            [ScopedService] FinanceDbContext context, 
-            [Service] IMediator mediator, 
-            [UserId] string userId, 
-            IEnumerable<Guid> portfolioIds)
-        {
-            return new DefaultPayload<ValuePercent>(true);
-        }
-        
-        [Authorize]
-        [UseDbContext(typeof(FinanceDbContext))]
-        public async Task<DefaultPayload<ValuePercent>> AggregatePortfolioPaperProfit(
-            [ScopedService] FinanceDbContext context, 
-            [Service] IMediator mediator, 
-            [UserId] string userId, 
-            IEnumerable<Guid> portfolioIds)
-        {
-            return new DefaultPayload<ValuePercent>(true);
-        }
-        
-        [Authorize]
-        [UseDbContext(typeof(FinanceDbContext))]
-        public async Task<DefaultPayload<decimal>> AggregatePortfolioCost(
-            [ScopedService] FinanceDbContext context, 
-            [Service] IMediator mediator, 
-            [UserId] string userId, 
-            IEnumerable<Guid> portfolioIds)
-        {
-            return new DefaultPayload<decimal>(true);
-        }
-        
-        [Authorize]
-        [UseDbContext(typeof(FinanceDbContext))]
-        public async Task<DefaultPayload<CostWithInvestSum>> AggregatePortfolioCostWithInvestSum(
-            [ScopedService] FinanceDbContext context, 
-            [Service] IMediator mediator, 
-            [UserId] string userId, 
-            IEnumerable<Guid> portfolioIds)
-        {
-            return new DefaultPayload<CostWithInvestSum>(true);
-        }
-        
-        [Authorize]
-        [UseDbContext(typeof(FinanceDbContext))]
-        public async Task<DefaultPayload<List<StockReport>>> AggregateStocks(
-            [ScopedService] FinanceDbContext context, 
-            [Service] IMediator mediator, 
-            [UserId] string userId, 
-            IEnumerable<Guid> portfolioIds)
-        {
-            return new DefaultPayload<List<StockReport>>(true);
-        }
-        
-        [Authorize]
-        [UseDbContext(typeof(FinanceDbContext))]
-        public async Task<DefaultPayload<List<FondReport>>> AggregateFonds(
-            [ScopedService] FinanceDbContext context, 
-            [Service] IMediator mediator, 
-            [UserId] string userId, 
-            IEnumerable<Guid> portfolioIds)
-        {
-            return new DefaultPayload<List<FondReport>>(true);
-        }
-        
-        [Authorize]
-        [UseDbContext(typeof(FinanceDbContext))]
-        public async Task<DefaultPayload<List<BondReport>>> AggregateBonds(
-            [ScopedService] FinanceDbContext context, 
-            [Service] IMediator mediator, 
-            [UserId] string userId, 
-            IEnumerable<Guid> portfolioIds)
-        {
-            return new DefaultPayload<List<BondReport>>(true);
-        }
-        
-        [Authorize]
-        [UseDbContext(typeof(FinanceDbContext))]
         public async Task<List<StockCandle>> StockCandles(
             [ScopedService] FinanceDbContext context, 
             [Service] IMediator mediator, 
@@ -228,17 +118,6 @@ namespace Sigma.Api.GraphQL
             string ticket, DateTime from, CandleInterval interval)
         {
             return new List<StockCandle>();
-        }
-        
-        [Authorize]
-        [UseDbContext(typeof(FinanceDbContext))]
-        public List<TimeValue> PortfolioCostGraph(
-            [ScopedService] FinanceDbContext context, 
-            [Service] IMediator mediator, 
-            [UserId] string userId, 
-            int portfolioId)
-        {
-            return new List<TimeValue>();
         }
         
         [Authorize]
