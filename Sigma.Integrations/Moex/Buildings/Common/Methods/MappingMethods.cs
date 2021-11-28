@@ -1,19 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Text.Json;
-using System.Threading.Tasks;
+using Sigma.Infrastructure;
 
-namespace Sigma.Integrations.Moex.AssetBuilding.Methods
+namespace Sigma.Integrations.Moex.Buildings.Common.Methods
 {
     public class MappingMethods
     {
         public delegate object MapPropertyFunc(string column,
             List<JsonElement> source,
-            List<string> columns);
+            List<string> columns,
+            FinanceDbContext context);
 
-        public static object MapPropertyString(string column, List<JsonElement> source, List<string> columns)
+        public static object MapPropertyString(string column, List<JsonElement> source, List<string> columns, FinanceDbContext context)
         {
             var columnsIndex = columns.IndexOf(column);
 
@@ -33,7 +33,7 @@ namespace Sigma.Integrations.Moex.AssetBuilding.Methods
 
             return null;
         }
-        public static object MapPropertyInt32(string column, List<JsonElement> source, List<string> columns)
+        public static object MapPropertyInt32(string column, List<JsonElement> source, List<string> columns, FinanceDbContext context)
         {
             var columnsIndex = columns.IndexOf(column);
 
@@ -58,7 +58,7 @@ namespace Sigma.Integrations.Moex.AssetBuilding.Methods
             return null;
         }
 
-        public static object MapPropertyInt64(string column, List<JsonElement> source, List<string> columns)
+        public static object MapPropertyInt64(string column, List<JsonElement> source, List<string> columns, FinanceDbContext context)
         {
             var columnsIndex = columns.IndexOf(column);
 
@@ -83,7 +83,7 @@ namespace Sigma.Integrations.Moex.AssetBuilding.Methods
             return null;
         }
 
-        public static object MapPropertyDecimal(string column, List<JsonElement> source, List<string> columns)
+        public static object MapPropertyDecimal(string column, List<JsonElement> source, List<string> columns, FinanceDbContext context)
         {
             var columnsIndex = columns.IndexOf(column);
 
@@ -108,7 +108,7 @@ namespace Sigma.Integrations.Moex.AssetBuilding.Methods
             return null;
         }
 
-        public static object MapPropertyDateTime(string column, List<JsonElement> source, List<string> columns)
+        public static object MapPropertyDateTime(string column, List<JsonElement> source, List<string> columns, FinanceDbContext context)
         {
             var columnsIndex = columns.IndexOf(column);
 
@@ -133,10 +133,10 @@ namespace Sigma.Integrations.Moex.AssetBuilding.Methods
             return null;
         }
 
-        public static object MapUpdateTime(string column, List<JsonElement> source, List<string> columns)
+        public static object MapUpdateTime(string column, List<JsonElement> source, List<string> columns, FinanceDbContext context)
         {
-            var updateTime = (string)MapPropertyString("UPDATETIME", source, columns);
-            var prevDate = (string)MapPropertyString("PREVDATE", source, columns);
+            var updateTime = (string)MapPropertyString("UPDATETIME", source, columns, context);
+            var prevDate = (string)MapPropertyString("PREVDATE", source, columns, context);
 
             if (prevDate == "0000-00-00")
             {
@@ -149,6 +149,24 @@ namespace Sigma.Integrations.Moex.AssetBuilding.Methods
             var updateTimeProperty = prevDateParsed + updateTimeParsed;
 
             return updateTimeProperty;
+        }
+
+        public static object MapCurrency(string column, List<JsonElement> source, List<string> columns, FinanceDbContext context)
+        {
+            var currencyTicket = MapPropertyString(column, source, columns, context);
+            if (currencyTicket == null)
+            {
+                return null;
+            }
+            
+            var currency = context.Currencies.FirstOrDefault(x => x.Ticket == currencyTicket.ToString());
+
+            if (currency == null)
+            {
+                return null;
+            }
+
+            return currency.Id;
         }
     }
 }

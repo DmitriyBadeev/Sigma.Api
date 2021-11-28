@@ -1,17 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Text.Json;
-using System.Threading.Tasks;
 using Sigma.Core.Entities;
-using Sigma.Integrations.Moex.AssetBuilding.Methods;
-using Sigma.Integrations.Moex.Models;
+using Sigma.Infrastructure;
+using Sigma.Integrations.Moex.Buildings.Common;
+using Sigma.Integrations.Moex.Buildings.Common.Methods;
+using Sigma.Integrations.Moex.Buildings.PaymentBuilding;
+using Sigma.Integrations.Moex.Models.Assets;
 
-namespace Sigma.Integrations.Moex.AssetBuilding.Builders
+namespace Sigma.Integrations.Moex.Buildings.AssetBuilding.Builders
 {
-    public class StockBuilder : AssetBuilder<Stock>
+    public class StockBuilder : RequestedBuilder<Stock, AssetResponse>
     {
         private static readonly Dictionary<string, (string propertyName, MappingMethods.MapPropertyFunc mapFunc)> _mapRules = new();
 
@@ -34,10 +33,10 @@ namespace Sigma.Integrations.Moex.AssetBuilding.Builders
             _mapRules.TryAdd("UPDATETIME + PREVDATE", (nameof(Stock.UpdateTime), MappingMethods.MapUpdateTime));
         }
 
-        private object MapCapitalization(string column, List<JsonElement> source, List<string> columns)
+        private object MapCapitalization(string column, List<JsonElement> source, List<string> columns, FinanceDbContext context)
         {
-            var issueSize = (long?)MappingMethods.MapPropertyInt64("ISSUESIZE", source, columns);
-            var price = (decimal?)MappingMethods.MapPropertyDecimal("LAST", source, columns);
+            var issueSize = (long?)MappingMethods.MapPropertyInt64("ISSUESIZE", source, columns, context);
+            var price = (decimal?)MappingMethods.MapPropertyDecimal("LAST", source, columns, context);
 
             if (issueSize != null && price != null)
             {
@@ -45,6 +44,26 @@ namespace Sigma.Integrations.Moex.AssetBuilding.Builders
             }
 
             return null;
+        }
+
+        public override List<Stock> BuildRequested(AssetResponse response, FinanceDbContext context)
+        {
+            var assets = new List<Stock>();
+            var columns = response.securities.columns
+                .Concat(response.marketdata.columns)
+                .ToList();
+
+            for (int i = 0; i < response.securities.data.Count; i++)
+            {
+                var data = response.securities.data[i]
+                    .Concat(response.marketdata.data[i])
+                    .ToList();
+
+                var asset = MapRequested(data, columns, context);
+                assets.Add(asset);
+            }
+
+            return assets;
         }
     }
 }

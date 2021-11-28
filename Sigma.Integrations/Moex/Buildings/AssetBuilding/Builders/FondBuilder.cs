@@ -1,15 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Sigma.Core.Entities;
-using Sigma.Integrations.Moex.AssetBuilding.Methods;
-using Sigma.Integrations.Moex.Models;
+using Sigma.Infrastructure;
+using Sigma.Integrations.Moex.Buildings.Common;
+using Sigma.Integrations.Moex.Buildings.Common.Methods;
+using Sigma.Integrations.Moex.Buildings.PaymentBuilding;
+using Sigma.Integrations.Moex.Models.Assets;
 
-namespace Sigma.Integrations.Moex.AssetBuilding.Builders
+namespace Sigma.Integrations.Moex.Buildings.AssetBuilding.Builders
 {
-    public class FondBuilder : AssetBuilder<Fond>
+    public class FondBuilder : RequestedBuilder<Fond, AssetResponse>
     {
         private static Dictionary<string, (string propertyName, MappingMethods.MapPropertyFunc mapFunc)> _mapRules = new();
 
@@ -25,6 +25,26 @@ namespace Sigma.Integrations.Moex.AssetBuilding.Builders
             _mapRules.TryAdd("LAST", (nameof(Fond.Price), MappingMethods.MapPropertyDecimal));
             _mapRules.TryAdd("LASTTOPREVPRICE", (nameof(Fond.PriceChange), MappingMethods.MapPropertyDecimal));
             _mapRules.TryAdd("UPDATETIME + PREVDATE", (nameof(Fond.UpdateTime), MappingMethods.MapUpdateTime));
+        }
+
+        public override List<Fond> BuildRequested(AssetResponse response, FinanceDbContext context)
+        {
+            var assets = new List<Fond>();
+            var columns = response.securities.columns
+                .Concat(response.marketdata.columns)
+                .ToList();
+
+            for (int i = 0; i < response.securities.data.Count; i++)
+            {
+                var data = response.securities.data[i]
+                    .Concat(response.marketdata.data[i])
+                    .ToList();
+
+                var asset = MapRequested(data, columns, context);
+                assets.Add(asset);
+            }
+
+            return assets;
         }
     }
 }

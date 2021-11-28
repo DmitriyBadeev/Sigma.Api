@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Sigma.Infrastructure\Sigma.Infrastructure.csproj" />
+    <ProjectReference Include="..\Sigma.Options\Sigma.Options.csproj" />
   </ItemGroup>
 
 </Project>

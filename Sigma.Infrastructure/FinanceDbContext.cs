@@ -17,6 +17,8 @@ namespace Sigma.Infrastructure
         public DbSet<PortfolioStock> PortfolioStocks { get; set; }
         public DbSet<PortfolioFond> PortfolioFonds { get; set; }
         public DbSet<PortfolioBond> PortfolioBonds { get; set; }
+        public DbSet<Dividend> Dividends { get; set; }
+        public DbSet<Coupon> Coupons { get; set; }
 
         public FinanceDbContext(DbContextOptions options) : base(options)
         {

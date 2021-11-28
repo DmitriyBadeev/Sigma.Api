@@ -4,6 +4,7 @@ namespace Sigma.Services.Interfaces
 {
     public interface IRefreshDataService
     {
-        Task RefreshBoards();
+        Task RefreshPayments();
+        Task RefreshAssets();
     }
 }

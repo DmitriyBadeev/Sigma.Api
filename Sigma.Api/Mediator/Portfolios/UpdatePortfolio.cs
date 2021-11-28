@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
 using Sigma.Api.GraphQL;
@@ -7,7 +6,7 @@ using Sigma.Api.Validations.Interfaces;
 using Sigma.Core.Entities;
 using Sigma.Infrastructure;
 
-namespace Sigma.Api.Mediator.Portfolio
+namespace Sigma.Api.Mediator.Portfolios
 {
     public static class UpdatePortfolio
     {

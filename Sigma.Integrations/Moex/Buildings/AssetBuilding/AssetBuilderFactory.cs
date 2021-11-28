@@ -1,15 +1,18 @@
-﻿using System;
-using System.Reflection;
-using Sigma.Core.Entities;
+﻿using Sigma.Core.Entities;
 using Sigma.Core.Interfaces;
-using Sigma.Integrations.Moex.AssetBuilding.Builders;
+using Sigma.Integrations.Moex.Buildings.AssetBuilding.Builders;
+using Sigma.Integrations.Moex.Buildings.PaymentBuilding;
+using System;
+using Sigma.Integrations.Moex.Buildings.Common;
+using Sigma.Integrations.Moex.Models.Interfaces;
 
-namespace Sigma.Integrations.Moex.AssetBuilding
+namespace Sigma.Integrations.Moex.Buildings.AssetBuilding
 {
     public class AssetBuilderFactory
     {
-        public IAssetBuilder<TAsset> GetAssetBuilder<TAsset>()
-            where TAsset : IAsset
+        public IRequestedBuilder<TAsset, TResponse> GetAssetBuilder<TAsset, TResponse>()
+            where TAsset : IAsset, IRequested
+            where TResponse : IResponse
         {
             Type assetBuilderType = null;
 
@@ -28,7 +31,7 @@ namespace Sigma.Integrations.Moex.AssetBuilding
 
             if (assetBuilderType != null)
             {
-                var assetBuilder = (IAssetBuilder<TAsset>)Activator.CreateInstance(assetBuilderType);
+                var assetBuilder = (IRequestedBuilder<TAsset, TResponse>)Activator.CreateInstance(assetBuilderType);
 
                 return assetBuilder;
             }

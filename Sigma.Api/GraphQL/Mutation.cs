@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Http;
 using Sigma.Api.Attributes;
 using Sigma.Api.Mediator.ExcelReports;
 using Sigma.Api.Mediator.Operations;
-using Sigma.Api.Mediator.Portfolio;
+using Sigma.Api.Mediator.Portfolios;
 using Sigma.Api.Validations.Interfaces;
 using Sigma.Core.Entities;
 using Sigma.Services.Interfaces;

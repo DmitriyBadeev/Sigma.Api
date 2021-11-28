@@ -6,8 +6,10 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Sigma.Hangfire.Filters;
+using Sigma.Imports;
 using Sigma.Infrastructure.Services;
 using Sigma.Integrations;
+using Sigma.Options;
 using Sigma.Services;
 
 namespace Sigma.Hangfire
@@ -23,6 +25,8 @@ namespace Sigma.Hangfire
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.Configure<HangFireSettings>(Configuration);
+
             services.AddControllers();
 
             var connectionString = Configuration.GetConnectionString("FinanceDbConnection");
@@ -30,6 +34,7 @@ namespace Sigma.Hangfire
             services.AddFinanceInfrastructureServices(connectionString);
             services.AddIntegrationsServices();
             services.AddServiceLayerServices();
+            services.AddImportServices();
             services.AddCors();
             services.AddTransient<TaskRegistrationService>();
 

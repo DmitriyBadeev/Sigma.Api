@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Text.Json;
 
-namespace Sigma.Integrations.Moex.Models
+namespace Sigma.Integrations.Moex.Models.Assets
 {
     public class Securities
     {

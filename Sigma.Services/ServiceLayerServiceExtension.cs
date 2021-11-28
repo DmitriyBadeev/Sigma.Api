@@ -1,6 +1,5 @@
 using Microsoft.Extensions.DependencyInjection;
 using Sigma.Services.Interfaces;
-using Sigma.Services.Service;
 using Sigma.Services.Services;
 using Sigma.Services.Services.SynchronizationService;
 

@@ -2,15 +2,10 @@
 
 namespace Sigma.Integrations.Common.Enums
 {
-    public enum MoexTradeModes
+    public enum AssetTypes
     {
-        [Description("TQBR")]
         Stock,
-
-        [Description("TQTF")]
         Fond,
-
-        [Description("TQOB")]
         Bond
     }
 }

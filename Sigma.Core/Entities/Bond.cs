@@ -7,7 +7,7 @@ using Sigma.Core.Interfaces;
 namespace Sigma.Core.Entities
 {
     [Index(nameof(Ticket), IsUnique = true)]
-    public class Bond : IEntity, IAsset
+    public class Bond : IEntity, IAsset, IRequested
     {
         [Key]
         public Guid Id { get; set; }
@@ -41,5 +41,7 @@ namespace Sigma.Core.Entities
         public decimal Coupon { get; set; }
 
         public List<PortfolioBond> PortfolioBonds { get; set; }
+
+        public List<Coupon> Coupons { get; set; }
     }
 }
