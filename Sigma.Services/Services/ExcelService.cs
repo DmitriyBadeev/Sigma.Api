@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Sigma.Core.Interfaces;
 using Sigma.Imports.Sber.Common.Factory;
 using Sigma.Infrastructure;
 using Sigma.Services.Interfaces;
 
-namespace Sigma.Services.Service
+namespace Sigma.Services.Services
 {
     public class ExcelService : IExcelService
     {

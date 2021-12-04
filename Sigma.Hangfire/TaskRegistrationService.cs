@@ -30,8 +30,9 @@ namespace Sigma.Hangfire
         // ReSharper disable once MemberCanBePrivate.Global
         public async Task MoexRefreshData()
         {
-            await _refreshDataService.RefreshBoards();
+            await _refreshDataService.RefreshAssets();
             await _synchronizationService.SyncPortfolios();
+            await _refreshDataService.RefreshPayments();
         }
     }
 }
