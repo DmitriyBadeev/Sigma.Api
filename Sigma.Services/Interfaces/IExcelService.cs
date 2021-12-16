@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Sigma.Core.Entities;
 using Sigma.Core.Interfaces;
 
 namespace Sigma.Services.Interfaces
@@ -14,5 +11,8 @@ namespace Sigma.Services.Interfaces
             Stream excelStream,
             out List<TOperation> operations,
             out string errorMessage) where TOperation : IOperation;
+
+        void FillAssetOperationData(List<AssetOperation> assetOperations);
+        void FillCurrencyOperationData(List<CurrencyOperation> currencyOperations);
     }
 }

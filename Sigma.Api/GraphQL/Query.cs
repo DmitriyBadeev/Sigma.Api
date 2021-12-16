@@ -146,7 +146,7 @@ namespace Sigma.Api.GraphQL
             [Service] IValidationService validationService,
             [UserId] string userId)
         {
-            return await mediator.Send(new ParseOperationReport<AssetOperation>.Command(report, context, validationService, userId));
+            return await mediator.Send(new ParseAssetReport.Command(report, context, validationService, userId));
         }
 
         [Authorize]
@@ -158,7 +158,7 @@ namespace Sigma.Api.GraphQL
             [Service] IValidationService validationService,
             [UserId] string userId)
         {
-            return await mediator.Send(new ParseOperationReport<CurrencyOperation>.Command(report, context, validationService, userId));
+            return await mediator.Send(new ParseCurrencyReport.Command(report, context, validationService, userId));
         }
     }
 }

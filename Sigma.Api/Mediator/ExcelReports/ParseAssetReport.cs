@@ -16,13 +16,12 @@ using Sigma.Services.Interfaces;
 
 namespace Sigma.Api.Mediator.ExcelReports
 {
-    public class ParseOperationReport<TOperation>
-        where TOperation: IOperation
+    public class ParseAssetReport
     {
         public record Command(IFile Report, FinanceDbContext Context, IValidationService ValidationService,
-            string UserId) : IRequest<List<TOperation>>;
+            string UserId) : IRequest<List<AssetOperation>>;
 
-        public class Handler : IRequestHandler<Command, List<TOperation>>
+        public class Handler : IRequestHandler<Command, List<AssetOperation>>
         {
             private readonly IExcelService _excelService;
 
@@ -31,16 +30,22 @@ namespace Sigma.Api.Mediator.ExcelReports
                 _excelService = excelService;
             }
 
-            public async Task<List<TOperation>> Handle(Command request, CancellationToken cancellationToken)
+            public async Task<List<AssetOperation>> Handle(Command request, CancellationToken cancellationToken)
             {
                 var (input, context, validationService, userId) = request;
 
                 await using var excelStream = input.OpenReadStream();
                 var isSuccess = _excelService.TryParseReport(excelStream, 
-                    out List<TOperation> operations, 
+                    out List<AssetOperation> operations, 
                     out string errorMessage);
 
-                return operations;
+                if (isSuccess)
+                {
+                    _excelService.FillAssetOperationData(operations);
+                    return operations;
+                }
+
+                return new List<AssetOperation>();
             }
         }
     }

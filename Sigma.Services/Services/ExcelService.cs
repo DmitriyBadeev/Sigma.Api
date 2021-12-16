@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using Sigma.Core.Entities;
 using Sigma.Core.Interfaces;
 using Sigma.Imports.Sber.Common.Factory;
 using Sigma.Infrastructure;
@@ -9,13 +10,13 @@ namespace Sigma.Services.Services
 {
     public class ExcelService : IExcelService
     {
-        private readonly IReportParserFactory reportParserFactory;
-        private readonly FinanceDbContext context;
+        private readonly IReportParserFactory _reportParserFactory;
+        private readonly FinanceDbContext _context;
 
         public ExcelService(IReportParserFactory reportParserFactory, FinanceDbContext context)
         {
-            this.reportParserFactory = reportParserFactory;
-            this.context = context;
+            _reportParserFactory = reportParserFactory;
+            _context = context;
         }
 
         public bool TryParseReport<TOperation>(
@@ -23,7 +24,7 @@ namespace Sigma.Services.Services
             out List<TOperation> operations, 
             out string errorMessage) where TOperation: IOperation
         {
-            var reportParser = reportParserFactory.GetReportParser<TOperation>();
+            var reportParser = _reportParserFactory.GetReportParser<TOperation>();
 
             if (reportParser == null)
             {
@@ -33,9 +34,30 @@ namespace Sigma.Services.Services
                 return false;
             }
             
-            var isSuccess = reportParser.TryParse(excelStream, context, out operations, out errorMessage);
+            var isSuccess = reportParser.TryParse(excelStream, _context, out operations, out errorMessage);
 
             return isSuccess;
+        }
+
+        public void FillAssetOperationData(List<AssetOperation> assetOperations)
+        {
+            foreach (var assetOperation in assetOperations)
+            {
+                var currency = _context.Currencies.Find(assetOperation.CurrencyId);
+
+                assetOperation.Currency = currency;
+                assetOperation.Total = assetOperation.Price * assetOperation.Amount;
+            }
+        }
+
+        public void FillCurrencyOperationData(List<CurrencyOperation> currencyOperations)
+        {
+            foreach (var currencyOperation in currencyOperations)
+            {
+                var currency = _context.Currencies.Find(currencyOperation.CurrencyId);
+
+                currencyOperation.Currency = currency;
+            }
         }
     }
 }
