@@ -120,9 +120,10 @@ namespace Sigma.Api.GraphQL
             [ScopedService] FinanceDbContext context,
             [Service] IMediator mediator,
             [Service] IValidationService validationService,
+            [Service] ISynchronizationService synchronizationService,
             [UserId] string userId)
         {
-            return await mediator.Send(new CreateAssetOperations.Command(assetOperations, context, validationService, userId));
+            return await mediator.Send(new CreateAssetOperations.Command(assetOperations, context, validationService, userId, synchronizationService));
         }
 
         [Authorize]
@@ -132,9 +133,10 @@ namespace Sigma.Api.GraphQL
             [ScopedService] FinanceDbContext context,
             [Service] IMediator mediator,
             [Service] IValidationService validationService,
+            [Service] ISynchronizationService synchronizationService,
             [UserId] string userId)
         {
-            return await mediator.Send(new CreateCurrencyOperations.Command(currencyOperations, context, validationService, userId));
+            return await mediator.Send(new CreateCurrencyOperations.Command(currencyOperations, context, validationService, userId, synchronizationService));
         }
     }
 }

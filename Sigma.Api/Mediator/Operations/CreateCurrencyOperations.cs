@@ -7,19 +7,20 @@ using Sigma.Api.GraphQL;
 using Sigma.Api.Validations.Interfaces;
 using Sigma.Core.Entities;
 using Sigma.Infrastructure;
+using Sigma.Services.Interfaces;
 
 namespace Sigma.Api.Mediator.Operations
 {
     public class CreateCurrencyOperations
     {
-        public record Command(List<CurrencyOperationInput> operations, FinanceDbContext Context, IValidationService ValidationService,
-            string UserId) : IRequest<DefaultPayload>;
+        public record Command(List<CurrencyOperationInput> Operations, FinanceDbContext Context, IValidationService ValidationService,
+            string UserId, ISynchronizationService SynchronizationService) : IRequest<DefaultPayload>;
 
         public class Handler : IRequestHandler<Command, DefaultPayload>
         {
             public async Task<DefaultPayload> Handle(Command request, CancellationToken cancellationToken)
             {
-                var (input, context, validationService, userId) = request;
+                var (input, context, validationService, userId, synchronizationService) = request;
 
                 var errors = input
                         .Select(x => validationService
@@ -54,7 +55,10 @@ namespace Sigma.Api.Mediator.Operations
 
                 await context.Set<CurrencyOperation>().AddRangeAsync(operations, cancellationToken);
                 await context.SaveChangesAsync(cancellationToken);
-
+                
+                var portfolioId = input.First().PortfolioId;
+                await synchronizationService.SyncPortfolio(portfolioId);
+                
                 return new DefaultPayload(true, "Список операций создан");
             }
         }
