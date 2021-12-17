@@ -48,6 +48,7 @@ namespace Sigma.Api.Mediator.Operations
                     Amount = x.Amount,
                     PortfolioId = x.PortfolioId,
                     Date = x.Date,
+                    Total = x.Price * x.Amount,
                     Price = x.Price,
                     Ticket = x.Ticket,
                     AssetAction = x.AssetAction,
