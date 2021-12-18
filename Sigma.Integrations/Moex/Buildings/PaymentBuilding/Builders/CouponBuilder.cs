@@ -12,6 +12,7 @@ namespace Sigma.Integrations.Moex.Buildings.PaymentBuilding.Builders
         private static Dictionary<string, (string propertyName, MappingMethods.MapPropertyFunc mapFunc)> _mapRules = new ()
         {
             { "coupondate", ("CouponDate", MappingMethods.MapPropertyDateTime) },
+            { "amortdate", ("CouponDate", MappingMethods.MapPropertyDateTime) },
             { "value", ("Value", MappingMethods.MapPropertyDecimal) },
             { "valueprc", ("ValuePercent", MappingMethods.MapPropertyDecimal) },
             { "faceunit", ("CurrencyId", MappingMethods.MapCurrency) }

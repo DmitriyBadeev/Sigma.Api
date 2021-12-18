@@ -16,6 +16,7 @@ using Sigma.Core.Entities;
 using Sigma.Core.Enums;
 using Sigma.Infrastructure;
 using Sigma.Services.Interfaces;
+using Sigma.Services.Models;
 
 namespace Sigma.Api.GraphQL
 {
@@ -159,6 +160,19 @@ namespace Sigma.Api.GraphQL
             [UserId] string userId)
         {
             return await mediator.Send(new ParseCurrencyReport.Command(report, context, validationService, userId));
+        }
+        
+        [Authorize]
+        [UseDbContext(typeof(FinanceDbContext))]
+        public async Task<DefaultPayload<List<PaymentData>>> GetFuturePayments(
+            Guid portfolioId,
+            [ScopedService] FinanceDbContext context,
+            [Service] IMediator mediator,
+            [Service] IValidationService validationService,
+            [Service] IPaymentService paymentService,
+            [UserId] string userId)
+        {
+            return await mediator.Send(new GetFuturePayments.Query(validationService, portfolioId, userId, context, paymentService));
         }
     }
 }

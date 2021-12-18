@@ -14,7 +14,8 @@ namespace Sigma.Services
             services.AddScoped<IMarketDataProvider, MarketDataProvider>();
             services.AddScoped<ISynchronizationService, SynchronizationService>();
             services.AddScoped<IAggregatePortfolioService, AggregatePortfolioService>();
-
+            services.AddScoped<IPaymentService, PaymentService>();
+            
             return services;
         }
     }
