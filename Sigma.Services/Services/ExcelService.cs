@@ -1,9 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using Sigma.Core.Entities;
+using Sigma.Core.Enums;
 using Sigma.Core.Interfaces;
 using Sigma.Imports.Sber.Common.Factory;
 using Sigma.Infrastructure;
+using Sigma.Integrations.Common.Enums;
 using Sigma.Services.Interfaces;
 
 namespace Sigma.Services.Services
@@ -44,9 +46,12 @@ namespace Sigma.Services.Services
             foreach (var assetOperation in assetOperations)
             {
                 var currency = _context.Currencies.Find(assetOperation.CurrencyId);
-
                 assetOperation.Currency = currency;
-                assetOperation.Total = assetOperation.Price * assetOperation.Amount;
+
+                if (assetOperation.AssetType == AssetType.Bond)
+                {
+                    assetOperation.Price = assetOperation.Total / assetOperation.Amount;
+                }
             }
         }
 

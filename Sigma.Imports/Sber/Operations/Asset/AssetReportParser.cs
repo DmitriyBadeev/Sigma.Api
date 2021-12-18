@@ -53,6 +53,13 @@ namespace Sigma.Imports.Sber.Operations.Asset
                 }
             },
             { 
+                "Объём сделки",
+                new List<(string property, ReportMapping.MapFunc mapFunc)>
+                {
+                    ("Total", ReportMapping.MapDecimal)
+                }
+            },
+            { 
                 "Валюта", 
                 new List<(string property, ReportMapping.MapFunc mapFunc)>
                 {
