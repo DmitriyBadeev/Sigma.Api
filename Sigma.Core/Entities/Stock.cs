@@ -44,6 +44,6 @@ namespace Sigma.Core.Entities
 
         public List<PortfolioStock> PortfolioStocks { get; set; }
 
-        public List<Dividend> Coupons { get; set; }
+        public List<Dividend> Dividends { get; set; }
     }
 }
