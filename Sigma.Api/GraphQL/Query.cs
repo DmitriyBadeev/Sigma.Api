@@ -165,14 +165,14 @@ namespace Sigma.Api.GraphQL
         [Authorize]
         [UseDbContext(typeof(FinanceDbContext))]
         public async Task<DefaultPayload<List<PaymentData>>> GetFuturePayments(
-            Guid portfolioId,
+            IEnumerable<Guid> portfolioIds,
             [ScopedService] FinanceDbContext context,
             [Service] IMediator mediator,
             [Service] IValidationService validationService,
             [Service] IPaymentService paymentService,
             [UserId] string userId)
         {
-            return await mediator.Send(new GetFuturePayments.Query(validationService, portfolioId, userId, context, paymentService));
+            return await mediator.Send(new GetFuturePayments.Query(validationService, portfolioIds, userId, context, paymentService));
         }
     }
 }

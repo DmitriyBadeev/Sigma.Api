@@ -15,18 +15,19 @@ namespace Sigma.Api.Mediator.Portfolios
 {
     public class GetFuturePayments
     {
-        public record Query(IValidationService ValidationService, Guid PortfolioId, string UserId, 
+        public record Query(IValidationService ValidationService, IEnumerable<Guid> PortfolioIds, string UserId, 
             FinanceDbContext Context, IPaymentService PaymentService) : IRequest<DefaultPayload<List<PaymentData>>>;
     
         public class Handler : IRequestHandler<Query, DefaultPayload<List<PaymentData>>>
         {
             public async Task<DefaultPayload<List<PaymentData>>> Handle(Query request, CancellationToken cancellationToken)
             {
-                var (validationService, portfolioId, userId, context, paymentService) = request;
+                var (validationService, portfolioIds, userId, context, paymentService) = request;
 
+                var ids = portfolioIds.ToList();
                 var error = validationService
-                    .CheckExist<Portfolio>(portfolioId)
-                    .PortfolioBelongsUser(portfolioId, userId)
+                    .CheckExist<Portfolio>(ids)
+                    .PortfoliosBelongUser(ids, userId)
                     .FirstError;
 
                 if (error != null)
@@ -34,7 +35,7 @@ namespace Sigma.Api.Mediator.Portfolios
                     return new DefaultPayload<List<PaymentData>>(false, error.Message);
                 }
 
-                var payments = await paymentService.GetFuturePayments(portfolioId);
+                var payments = await paymentService.GetFuturePayments(ids);
 
                 return new DefaultPayload<List<PaymentData>>(true, "Будущие выплаты получены", payments);
             }

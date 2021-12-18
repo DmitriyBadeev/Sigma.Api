@@ -19,6 +19,18 @@ namespace Sigma.Services.Services
             _financeDbContext = financeDbContext;
         }
 
+        public async Task<List<PaymentData>> GetFuturePayments(IEnumerable<Guid> portfolioIds)
+        {
+            var futurePayments = new List<PaymentData>();
+            foreach (var portfolioId in portfolioIds)
+            {
+                var portfolioFuturePayments = await GetFuturePayments(portfolioId);
+                futurePayments.AddRange(portfolioFuturePayments);
+            }
+
+            return futurePayments;
+        }
+        
         public async Task<List<PaymentData>> GetFuturePayments(Guid portfolioId)
         {
             var portfolio = await _financeDbContext.Portfolios
