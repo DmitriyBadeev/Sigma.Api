@@ -15,6 +15,7 @@ using Sigma.Api.Validations.Interfaces;
 using Sigma.Core.Entities;
 using Sigma.Core.Enums;
 using Sigma.Infrastructure;
+using Sigma.Integrations.Moex.Models.Candles;
 using Sigma.Services.Interfaces;
 using Sigma.Services.Models;
 
@@ -112,13 +113,11 @@ namespace Sigma.Api.GraphQL
 
         [Authorize]
         [UseDbContext(typeof(FinanceDbContext))]
-        public async Task<List<StockCandle>> StockCandles(
-            [ScopedService] FinanceDbContext context, 
-            [Service] IMediator mediator, 
-            [UserId] string userId, 
+        public async Task<List<Candle>> StockCandles(
+            [Service] IHistoryDataService historyDataService,
             string ticket, DateTime from, CandleInterval interval)
         {
-            return new List<StockCandle>();
+            return await historyDataService.StockCandles(ticket, from, interval);
         }
         
         [Authorize]

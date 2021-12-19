@@ -19,6 +19,7 @@ using Sigma.Api.GraphQL;
 using Sigma.Api.Validations;
 using Sigma.Imports;
 using Sigma.Integrations;
+using Sigma.Options;
 using Sigma.Services;
 
 namespace Sigma.Api
@@ -36,6 +37,7 @@ namespace Sigma.Api
         {
             var connectionString = Configuration.GetConnectionString("DefaultConnection");
             
+            services.Configure<IntegrationSettings>(Configuration);
             services.AddFinanceInfrastructureServices(connectionString);
 
             services.AddIntegrationsServices();

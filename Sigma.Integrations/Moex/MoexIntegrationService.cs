@@ -8,6 +8,8 @@ using System;
 using System.Collections.Generic;
 using System.Text.Json;
 using System.Threading.Tasks;
+using Sigma.Integrations.Moex.Buildings;
+using Sigma.Integrations.Moex.Models.Candles;
 
 namespace Sigma.Integrations.Moex
 {
@@ -60,6 +62,17 @@ namespace Sigma.Integrations.Moex
             var payments = paymentBuilder.BuildRequested(paymentDeserialized, _context);
 
             return payments;
+        }
+
+        public async Task<List<Candle>> GetHistoryPrice(string ticket, DateTime from, CandleInterval interval)
+        {
+            var candlesJson = await _moexApi.GetCandlesJson(ticket, from, interval);
+            var candlesDeserialized = JsonSerializer.Deserialize<CandleResponse>(candlesJson);
+
+            var builder = new CandleBuilder();
+            var candles = builder.BuildRequested(candlesDeserialized, _context);
+
+            return candles;
         }
     }
 }

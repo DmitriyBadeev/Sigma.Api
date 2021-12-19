@@ -25,7 +25,7 @@ namespace Sigma.Hangfire
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.Configure<HangFireSettings>(Configuration);
+            services.Configure<IntegrationSettings>(Configuration);
 
             services.AddControllers();
 

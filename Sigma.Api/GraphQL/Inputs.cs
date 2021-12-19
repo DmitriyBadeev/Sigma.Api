@@ -26,12 +26,4 @@ namespace Sigma.Api.GraphQL
         Guid PortfolioId,
         string Ticket,
         int? Amount);
-
-    public enum CandleInterval
-    {
-        Week = 7,
-        Day = 24,
-        Month = 31,
-        Hour = 60,
-    }
 }

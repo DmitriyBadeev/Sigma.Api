@@ -7,5 +7,7 @@
         public string BondBoard { get; set; }
         public string Dividends { get; set; }
         public string Coupons { get; set; }
+        
+        public string Candles { get; set; }
     }
 }

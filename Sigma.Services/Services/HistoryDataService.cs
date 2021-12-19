@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Sigma.Core.Entities;
 using Sigma.Infrastructure;
+using Sigma.Integrations.Moex;
+using Sigma.Integrations.Moex.Models.Candles;
 using Sigma.Services.Extensions;
 using Sigma.Services.Interfaces;
 using Sigma.Services.Models;
@@ -14,10 +16,12 @@ namespace Sigma.Services.Services
     public class HistoryDataService : IHistoryDataService
     {
         private readonly FinanceDbContext _context;
+        private readonly MoexIntegrationService _moexIntegrationService;
 
-        public HistoryDataService(FinanceDbContext context)
+        public HistoryDataService(FinanceDbContext context, MoexIntegrationService moexIntegrationService)
         {
             _context = context;
+            _moexIntegrationService = moexIntegrationService;
         }
 
         public async Task MakePortfoliosRecord()
@@ -70,6 +74,11 @@ namespace Sigma.Services.Services
             }
 
             return graphData;
+        }
+
+        public async Task<List<Candle>> StockCandles(string ticket, DateTime from, CandleInterval interval)
+        {
+            return await _moexIntegrationService.GetHistoryPrice(ticket, from, interval);
         }
     }
 }
