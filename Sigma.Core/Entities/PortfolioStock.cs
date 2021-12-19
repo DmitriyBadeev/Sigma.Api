@@ -25,6 +25,6 @@ namespace Sigma.Core.Entities
 
         public Guid StockId { get; set; }
         
-        public Stock Stock { get; set; }    
+        public Stock Stock { get; set; }
     }
 }

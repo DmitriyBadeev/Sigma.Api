@@ -19,7 +19,8 @@ namespace Sigma.Integrations.Moex.Buildings
             { "low", (nameof (Candle.Low), MappingMethods.MapPropertyDecimal) },
             { "value", (nameof (Candle.Value), MappingMethods.MapPropertyDecimal) },
             { "volume", (nameof (Candle.Volume), MappingMethods.MapPropertyDecimal) },
-            { "begin", (nameof (Candle.Date), MapDate) }
+            { "begin", (nameof (Candle.Begin), MapDate) },
+            { "end", (nameof (Candle.End), MapDate) }
         };
         
         public CandleBuilder() : base(_mapRules)

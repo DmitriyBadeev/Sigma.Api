@@ -11,7 +11,10 @@ namespace Sigma.Integrations.Moex.Models.Candles
         public decimal Low { get; init; }
         public decimal Value { get; init; }
         public decimal Volume { get; init; }
-        public DateTime Date { get; init; }
+        
+        public DateTime Begin { get; init; }
+        
+        public DateTime End { get; init; }
     }
 
     public enum CandleInterval
