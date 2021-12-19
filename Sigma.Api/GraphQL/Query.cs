@@ -123,13 +123,14 @@ namespace Sigma.Api.GraphQL
         
         [Authorize]
         [UseDbContext(typeof(FinanceDbContext))]
-        public async Task<List<CostGraphData>> AggregatePortfolioCostGraph(
-            [ScopedService] FinanceDbContext context, 
-            [Service] IMediator mediator, 
+        public async Task<DefaultPayload<List<CostGraphData>>> GetPortfoliosCostGraph(
+            [Service] IMediator mediator,
+            [Service] IHistoryDataService historyDataService,
+            [Service] IValidationService validationService,
             [UserId] string userId, 
             IEnumerable<Guid> portfolioIds)
         {
-            return new List<CostGraphData>();
+            return await mediator.Send(new GetPortfoliosCostGraph.Query(validationService, portfolioIds, historyDataService, userId));
         }
 
         [Authorize]

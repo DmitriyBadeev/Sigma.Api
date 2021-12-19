@@ -15,6 +15,7 @@ namespace Sigma.Services
             services.AddScoped<ISynchronizationService, SynchronizationService>();
             services.AddScoped<IAggregatePortfolioService, AggregatePortfolioService>();
             services.AddScoped<IPaymentService, PaymentService>();
+            services.AddScoped<IHistoryDataService, HistoryDataService>();
             
             return services;
         }

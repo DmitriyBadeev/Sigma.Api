@@ -16,13 +16,4 @@ namespace Sigma.Api.GraphQL
         double Value,
         double Volume,
         long Date);
-
-    public record TimeValue(
-        long Date,
-        int Value);
-
-    public record CostGraphData(
-        int PortfolioId,
-        string PortfolioName,
-        List<TimeValue> Data);
 }

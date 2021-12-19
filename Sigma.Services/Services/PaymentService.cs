@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Sigma.Core.Entities;
 using Sigma.Infrastructure;
+using Sigma.Services.Extensions;
 using Sigma.Services.Interfaces;
 using Sigma.Services.Models;
 
@@ -61,7 +62,7 @@ namespace Sigma.Services.Services
             foreach (var stock in stocks)
             {
                 var stockDividends = stock.Stock.Dividends
-                    .Where(d => d.RegistryCloseDate.Date >= DateTime.Now.Date)
+                    .Where(d => d.RegistryCloseDate.Date.IsFuture())
                     .Select(d => new PaymentData
                     (
                         stock.Stock.ShortName,
@@ -85,7 +86,7 @@ namespace Sigma.Services.Services
             foreach (var bond in bonds)
             {
                 var bondCoupons = bond.Bond.Coupons
-                    .Where(c => c.CouponDate.Date >= DateTime.Now.Date)
+                    .Where(c => c.CouponDate.Date.IsFuture())
                     .Select(d => new PaymentData
                     (
                         bond.Bond.ShortName,
