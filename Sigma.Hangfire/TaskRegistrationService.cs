@@ -27,7 +27,7 @@ namespace Sigma.Hangfire
             JobStorage.Current = new PostgreSqlStorage(_configuration.GetConnectionString("HangfireConnection"));
 
             RecurringJob.AddOrUpdate("MoexBoardRefresh", () => MoexRefreshData(), "0 0/5 * * * *");
-            RecurringJob.AddOrUpdate("DailyReport", () => DailyPortfolioReport(), "0 19 * * * *");
+            RecurringJob.AddOrUpdate("DailyReport", () => DailyPortfolioReport(), "0 0 19 * * *");
         }
         
         // ReSharper disable once MemberCanBePrivate.Global
