@@ -64,7 +64,7 @@ namespace Sigma.Integrations.Moex
             return payments;
         }
 
-        public async Task<List<Candle>> GetHistoryPrice(string ticket, DateTime from, CandleInterval interval)
+        public async Task<List<Candle>> GetHistoryPrices(string ticket, DateTime? from, CandleInterval interval)
         {
             var candlesJson = await _moexApi.GetCandlesJson(ticket, from, interval);
             var candlesDeserialized = JsonSerializer.Deserialize<CandleResponse>(candlesJson);

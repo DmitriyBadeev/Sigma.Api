@@ -41,6 +41,12 @@ namespace Sigma.Core.Entities
         public decimal PriceChange { get; set; }
         
         public DateTime UpdateTime { get; set; }
+        
+        public decimal AverageProfit { get; set; }
+
+        public decimal Risk { get; set; }
+        
+        public decimal SharpeRatio { get; set; }
 
         public List<PortfolioStock> PortfolioStocks { get; set; }
 

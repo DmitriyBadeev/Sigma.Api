@@ -66,10 +66,10 @@ namespace Sigma.Integrations.Moex
             return data;
         }
 
-        public async Task<string> GetCandlesJson(string ticket, DateTime from, CandleInterval interval)
+        public async Task<string> GetCandlesJson(string ticket, DateTime? from, CandleInterval interval)
         {
             var candlesUrl = _integrationSettings.Value.IntegrationUrls.Moex.Candles;
-            var dateString = from.ToString("yyyy-MM-dd");
+            var dateString = from?.ToString("yyyy-MM-dd");
             
             var url = candlesUrl
                 .Replace("{ticket}", ticket)

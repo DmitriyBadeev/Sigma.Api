@@ -40,6 +40,14 @@ namespace Sigma.Core.Entities
         
         public decimal Coupon { get; set; }
 
+        public decimal CouponPercent { get; set; }
+        
+        public decimal AverageProfit { get; set; }
+
+        public decimal Risk { get; set; }
+        
+        public decimal SharpeRatio { get; set; }
+
         public List<PortfolioBond> PortfolioBonds { get; set; }
 
         public List<Coupon> Coupons { get; set; }

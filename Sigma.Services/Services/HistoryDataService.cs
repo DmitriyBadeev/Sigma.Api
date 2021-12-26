@@ -78,7 +78,7 @@ namespace Sigma.Services.Services
 
         public async Task<List<Candle>> StockCandles(string ticket, DateTime from, CandleInterval interval)
         {
-            return await _moexIntegrationService.GetHistoryPrice(ticket, from, interval);
+            return await _moexIntegrationService.GetHistoryPrices(ticket, from, interval);
         }
     }
 }

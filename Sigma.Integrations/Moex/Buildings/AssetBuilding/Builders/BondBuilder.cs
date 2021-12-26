@@ -30,6 +30,7 @@ namespace Sigma.Integrations.Moex.Buildings.AssetBuilding.Builders
             _mapRules.TryAdd("MATDATE", (nameof(Bond.AmortizationDate), MappingMethods.MapPropertyDateTime));
             _mapRules.TryAdd("FACEVALUE", (nameof(Bond.Nominal), MappingMethods.MapPropertyDecimal));
             _mapRules.TryAdd("COUPONVALUE", (nameof(Bond.Coupon), MappingMethods.MapPropertyDecimal));
+            _mapRules.TryAdd("COUPONPERCENT", (nameof(Bond.CouponPercent), MappingMethods.MapPropertyDecimal));
         }
 
         private object MapPrice(string column, List<JsonElement> source, List<string> columns, FinanceDbContext context)

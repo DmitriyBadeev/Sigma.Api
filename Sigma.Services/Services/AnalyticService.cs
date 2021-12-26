@@ -1,6 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Sigma.Core.Entities;
+using Sigma.Integrations.Moex.Models.Candles;
+using Sigma.Services.Extensions;
+using Sigma.Services.Helpers;
 using Sigma.Services.Interfaces;
 using Sigma.Services.Models;
 
@@ -8,6 +11,8 @@ namespace Sigma.Services.Services
 {
     public class AnalyticService : IAnalyticService
     {
+        private readonly decimal _safeRate = new(0.65);
+        
         public HerfindahlHirschmanIndex GetHerfindahlHirschmanIndex(Portfolio portfolio)
         {
             var paperCost = GetPaperCost(portfolio);
@@ -61,7 +66,41 @@ namespace Sigma.Services.Services
 
             return shares;
         }
-        
+
+        public decimal GetAverageProfit(List<Candle> priceCandles)
+        {
+            var profitPercents = GetProfitPercents(priceCandles).ToList();
+
+            return profitPercents.Count > 0 ? profitPercents.ToAbsolute().Average() : 0;
+        }
+
+        public decimal GetRisk(List<Candle> priceCandles)
+        {
+            var profitPercents = GetProfitPercents(priceCandles).ToList();
+            
+            return profitPercents.Count > 0 ? profitPercents.StandardDeviation() : 0;
+        }
+
+        public decimal GetSharpeRatio(decimal profit, decimal risk)
+        {
+            return ArithmeticHelper.SafeDivFunc(profit - _safeRate, risk);
+        }
+
+        private IEnumerable<decimal> GetProfitPercents(List<Candle> priceCandles)
+        {
+            var profitPercents = new List<decimal>();
+            foreach (var priceCandle in priceCandles)
+            {
+                var beginIntervalPrice = priceCandle.Open;
+                var endIntervalPrice = priceCandle.Close;
+                var profit = endIntervalPrice - beginIntervalPrice;
+                var profitPercent = ArithmeticHelper.SafeDivFunc(profit, beginIntervalPrice) * 100;
+                profitPercents.Add(profitPercent);
+            }
+
+            return profitPercents;
+        }
+
         private decimal Squared(decimal value) => value * value;
 
         private decimal GetPaperCost(Portfolio portfolio)

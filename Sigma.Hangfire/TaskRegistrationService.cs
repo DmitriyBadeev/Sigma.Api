@@ -26,7 +26,8 @@ namespace Sigma.Hangfire
         {
             JobStorage.Current = new PostgreSqlStorage(_configuration.GetConnectionString("HangfireConnection"));
 
-            RecurringJob.AddOrUpdate("MoexBoardRefresh", () => MoexRefreshData(), "0 0/5 * * * *");
+            RecurringJob.AddOrUpdate("MoexBoardRefresh", () => MoexRefreshData(), "0 0/10 * * * *");
+            RecurringJob.AddOrUpdate("MoexPaymentsRefresh", () => MoexPaymentsRefresh(), "0 0 17 * * *");
             RecurringJob.AddOrUpdate("DailyReport", () => DailyPortfolioReport(), "0 0 19 * * *");
         }
         
@@ -35,7 +36,14 @@ namespace Sigma.Hangfire
         {
             await _refreshDataService.RefreshAssets();
             await _synchronizationService.SyncPortfolios();
+            await _refreshDataService.RefreshIndexes();
+        }
+
+        // ReSharper disable once MemberCanBePrivate.Global
+        public async Task MoexPaymentsRefresh()
+        {
             await _refreshDataService.RefreshPayments();
+            await _synchronizationService.SyncPortfolios();
         }
         
         // ReSharper disable once MemberCanBePrivate.Global

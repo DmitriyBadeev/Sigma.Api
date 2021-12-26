@@ -7,6 +7,7 @@ using Sigma.Core.Interfaces;
 using Sigma.Infrastructure;
 using Sigma.Integrations.Moex;
 using Sigma.Integrations.Moex.Models.Assets;
+using Sigma.Integrations.Moex.Models.Candles;
 using Sigma.Integrations.Moex.Models.Interfaces;
 using Sigma.Integrations.Moex.Models.Payments.Coupons;
 using Sigma.Integrations.Moex.Models.Payments.Dividends;
@@ -18,13 +19,15 @@ namespace Sigma.Services.Services
     {
         private readonly FinanceDbContext _context;
         private readonly MoexIntegrationService _moexIntegrationService;
+        private readonly IAnalyticService _analyticService;
 
         private delegate void PaymentsToAsset(List<IPayment> payments, Guid assetId);
 
-        public RefreshDataService(FinanceDbContext context, MoexIntegrationService moexIntegrationService)
+        public RefreshDataService(FinanceDbContext context, MoexIntegrationService moexIntegrationService, IAnalyticService analyticService)
         {
             _context = context;
             _moexIntegrationService = moexIntegrationService;
+            _analyticService = analyticService;
         }
 
         public async Task RefreshPayments()
@@ -43,6 +46,53 @@ namespace Sigma.Services.Services
             {
                 await GetAndSavePayment<Dividend, DividendResponse>(stock.Ticket, DividendsToStock, stock.Id);
             }
+        }
+
+        public async Task RefreshIndexes()
+        {
+            await RefreshAssetIndexes<Stock>();
+            await RefreshAssetIndexes<Fond>();
+            await RefreshBondIndexes();
+        }
+
+        private async Task RefreshAssetIndexes<TAsset>() 
+            where TAsset : class, IAsset
+        {
+            var assets = _context.Set<TAsset>();
+            foreach (var asset in assets)
+            {
+                var prices = await _moexIntegrationService.GetHistoryPrices(asset.Ticket, null, CandleInterval.Month);
+                var averageProfit = _analyticService.GetAverageProfit(prices);
+                var risk = _analyticService.GetRisk(prices);
+                var sharpeRatio = _analyticService.GetSharpeRatio(averageProfit, risk);
+
+                asset.AverageProfit = averageProfit;
+                asset.Risk = risk;
+                asset.SharpeRatio = sharpeRatio;
+                
+                _context.Set<TAsset>().Update(asset);
+            }
+            
+            await _context.SaveChangesAsync();
+        }
+
+        private async Task RefreshBondIndexes()
+        {
+            var bonds = _context.Bonds;
+            foreach (var bond in bonds)
+            {
+                var averageProfit = bond.CouponPercent / 12;
+                var risk = 0;
+                var sharpeRatio = _analyticService.GetSharpeRatio(averageProfit, risk);
+                
+                bond.AverageProfit = averageProfit;
+                bond.Risk = risk;
+                bond.SharpeRatio = sharpeRatio;
+                
+                _context.Bonds.Update(bond);
+            }
+            
+            await _context.SaveChangesAsync();
         }
 
         private async Task GetAndSavePayment<TPayment, TResponse>(string ticket, PaymentsToAsset assign, Guid assetId)
@@ -78,9 +128,7 @@ namespace Sigma.Services.Services
 
             _context.SaveChanges();
         }
-
-
-
+        
         public async Task RefreshAssets()
         {
             // TODO: Рассмотреть в будущем возможность апдейта без удаления всех записей

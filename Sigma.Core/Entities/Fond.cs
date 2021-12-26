@@ -32,6 +32,12 @@ namespace Sigma.Core.Entities
         
         public DateTime UpdateTime { get; set; }
         
+        public decimal AverageProfit { get; set; }
+
+        public decimal Risk { get; set; }
+        
+        public decimal SharpeRatio { get; set; }
+        
         public List<PortfolioFond> PortfolioFonds { get; set; }
     }
 }

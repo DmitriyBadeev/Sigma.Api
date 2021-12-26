@@ -6,5 +6,6 @@ namespace Sigma.Services.Interfaces
     {
         Task RefreshPayments();
         Task RefreshAssets();
+        Task RefreshIndexes();
     }
 }
