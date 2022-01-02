@@ -41,13 +41,13 @@ namespace Sigma.Services.Services
         public List<AssetShare> GetPortfolioAssetShares(Portfolio portfolio)
         {
             var paperCost = GetPaperCost(portfolio);
-            var allRisk = GetAllRisk(portfolio);
+            var allRisk = GetAllRisk(portfolio, paperCost);
             var shares = new List<AssetShare>();
 
             foreach (var stock in portfolio.PortfolioStocks)
             {
-                var percent = (stock.Cost / paperCost) * 100;
-                var riskPercent = (stock.Stock.Risk / allRisk) * 100;
+                var percent = GetAssetPercent(stock.Cost, paperCost);
+                var riskPercent = GetRiskPercent(stock.Stock.Risk, stock.Cost, allRisk, paperCost);
 
                 var assetShare = new AssetShare(stock.Stock.Ticket, stock.Stock.ShortName, percent, riskPercent);
                 shares.Add(assetShare);
@@ -55,8 +55,8 @@ namespace Sigma.Services.Services
             
             foreach (var fond in portfolio.PortfolioFonds)
             {
-                var percent = (fond.Cost / paperCost) * 100;
-                var riskPercent = (fond.Fond.Risk / allRisk) * 100;
+                var percent = GetAssetPercent(fond.Cost, paperCost);
+                var riskPercent = GetRiskPercent(fond.Fond.Risk, fond.Cost, allRisk, paperCost);
                 
                 var assetShare = new AssetShare(fond.Fond.Ticket, fond.Fond.ShortName, percent, riskPercent);
                 shares.Add(assetShare);
@@ -64,8 +64,8 @@ namespace Sigma.Services.Services
             
             foreach (var bond in portfolio.PortfolioBonds)
             {
-                var percent = (bond.Cost / paperCost) * 100;
-                var riskPercent = (bond.Bond.Risk / allRisk) * 100;
+                var percent = GetAssetPercent(bond.Cost, paperCost);
+                var riskPercent = GetRiskPercent(bond.Bond.Risk, bond.Cost, allRisk, paperCost);
                 
                 var assetShare = new AssetShare(bond.Bond.Ticket, bond.Bond.ShortName, percent, riskPercent);
                 shares.Add(assetShare);
@@ -73,6 +73,11 @@ namespace Sigma.Services.Services
 
             return shares;
         }
+
+        private decimal GetRiskPercent(decimal assetRisk, decimal assetCost, decimal allRisk, decimal paperCost) =>
+            ((assetRisk * (assetCost / paperCost)) / allRisk) * 100;
+        
+        private decimal GetAssetPercent(decimal assetCost, decimal paperCost) => (assetCost / paperCost) * 100;
 
         public SharpeRatio GetSharpeRatio(Portfolio portfolio)
         {
@@ -188,13 +193,13 @@ namespace Sigma.Services.Services
             return paperCost;
         }
 
-        private decimal GetAllRisk(Portfolio portfolio)
+        private decimal GetAllRisk(Portfolio portfolio, decimal paperCost)
         {
             var allRisk = (decimal)0;
 
-            allRisk += portfolio.PortfolioStocks.Sum(stock => stock.Stock.Risk);
-            allRisk += portfolio.PortfolioFonds.Sum(fond => fond.Fond.Risk);
-            allRisk += portfolio.PortfolioBonds.Sum(bond => bond.Bond.Risk);
+            allRisk += portfolio.PortfolioStocks.Sum(stock => stock.Stock.Risk * ArithmeticHelper.SafeDivFunc(stock.Cost, paperCost));
+            allRisk += portfolio.PortfolioFonds.Sum(fond => fond.Fond.Risk * ArithmeticHelper.SafeDivFunc(fond.Cost, paperCost));
+            allRisk += portfolio.PortfolioBonds.Sum(bond => bond.Bond.Risk * ArithmeticHelper.SafeDivFunc(bond.Cost, paperCost));
 
             return allRisk;
         }
