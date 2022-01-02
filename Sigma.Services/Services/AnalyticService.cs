@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Sigma.Core.Entities;
-using Sigma.Core.Interfaces;
 using Sigma.Integrations.Moex.Models.Candles;
 using Sigma.Services.Extensions;
 using Sigma.Services.Helpers;
@@ -42,27 +41,34 @@ namespace Sigma.Services.Services
         public List<AssetShare> GetPortfolioAssetShares(Portfolio portfolio)
         {
             var paperCost = GetPaperCost(portfolio);
+            var allRisk = GetAllRisk(portfolio);
             var shares = new List<AssetShare>();
 
             foreach (var stock in portfolio.PortfolioStocks)
             {
                 var percent = (stock.Cost / paperCost) * 100;
-                var share = new AssetShare(stock.Stock.Ticket, stock.Stock.ShortName, percent);
-                shares.Add(share);
+                var riskPercent = (stock.Stock.Risk / allRisk) * 100;
+
+                var assetShare = new AssetShare(stock.Stock.Ticket, stock.Stock.ShortName, percent, riskPercent);
+                shares.Add(assetShare);
             }
             
             foreach (var fond in portfolio.PortfolioFonds)
             {
                 var percent = (fond.Cost / paperCost) * 100;
-                var share = new AssetShare(fond.Fond.Ticket, fond.Fond.ShortName, percent);
-                shares.Add(share);
+                var riskPercent = (fond.Fond.Risk / allRisk) * 100;
+                
+                var assetShare = new AssetShare(fond.Fond.Ticket, fond.Fond.ShortName, percent, riskPercent);
+                shares.Add(assetShare);
             }
             
             foreach (var bond in portfolio.PortfolioBonds)
             {
                 var percent = (bond.Cost / paperCost) * 100;
-                var share = new AssetShare(bond.Bond.Ticket, bond.Bond.ShortName, percent);
-                shares.Add(share);
+                var riskPercent = (bond.Bond.Risk / allRisk) * 100;
+                
+                var assetShare = new AssetShare(bond.Bond.Ticket, bond.Bond.ShortName, percent, riskPercent);
+                shares.Add(assetShare);
             }
 
             return shares;
@@ -180,6 +186,17 @@ namespace Sigma.Services.Services
             paperCost += portfolio.PortfolioFonds.Sum(fond => fond.Cost);
 
             return paperCost;
+        }
+
+        private decimal GetAllRisk(Portfolio portfolio)
+        {
+            var allRisk = (decimal)0;
+
+            allRisk += portfolio.PortfolioStocks.Sum(stock => stock.Stock.Risk);
+            allRisk += portfolio.PortfolioFonds.Sum(fond => fond.Fond.Risk);
+            allRisk += portfolio.PortfolioBonds.Sum(bond => bond.Bond.Risk);
+
+            return allRisk;
         }
     }
 }
