@@ -11,7 +11,10 @@ namespace Sigma.Services.Interfaces
         HerfindahlHirschmanIndexInterpretation GetHerfindahlHirschmanInterpretation(decimal value);
         List<AssetShare> GetPortfolioAssetShares(Portfolio portfolio);
         decimal GetAverageProfit(List<Candle> priceCandles);
+        decimal GetAverageProfit(Portfolio portfolio);
         decimal GetRisk(List<Candle> priceCandles);
+        decimal GetRisk(Portfolio portfolio);
         decimal GetSharpeRatio(decimal profit, decimal risk);
+        SharpeRatio GetSharpeRatio(Portfolio portfolio);
     }
 }

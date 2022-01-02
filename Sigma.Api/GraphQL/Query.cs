@@ -200,5 +200,18 @@ namespace Sigma.Api.GraphQL
         {
             return await mediator.Send(new GetHerfindahlHirschmanIndex.Query(validationService, portfolioIds, aggregatePortfolioService, analyticService, userId));
         }
+        
+        [Authorize]
+        [UseDbContext(typeof(FinanceDbContext))]
+        public async Task<DefaultPayload<SharpeRatio>> GetSharpeRatio(
+            [Service] IAggregatePortfolioService aggregatePortfolioService,
+            [Service] IValidationService validationService,
+            [Service] IMediator mediator,
+            [Service] IAnalyticService analyticService,
+            [UserId] string userId, 
+            IEnumerable<Guid> portfolioIds)
+        {
+            return await mediator.Send(new GetSharpeRatio.Query(validationService, portfolioIds, aggregatePortfolioService, analyticService, userId));
+        }
     }
 }

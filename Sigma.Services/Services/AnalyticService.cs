@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Sigma.Core.Entities;
+using Sigma.Core.Interfaces;
 using Sigma.Integrations.Moex.Models.Candles;
 using Sigma.Services.Extensions;
 using Sigma.Services.Helpers;
@@ -67,6 +68,14 @@ namespace Sigma.Services.Services
             return shares;
         }
 
+        public SharpeRatio GetSharpeRatio(Portfolio portfolio)
+        {
+            var portfolioRisk = GetRisk(portfolio);
+            var portfolioAverageProfit = GetAverageProfit(portfolio);
+
+            return new SharpeRatio(portfolioRisk, _safeRate, portfolioAverageProfit);
+        }
+
         public decimal GetAverageProfit(List<Candle> priceCandles)
         {
             var profitPercents = GetProfitPercents(priceCandles).ToList();
@@ -74,11 +83,71 @@ namespace Sigma.Services.Services
             return profitPercents.Count > 0 ? profitPercents.ToAbsolute().Average() : 0;
         }
 
+        public decimal GetAverageProfit(Portfolio portfolio)
+        {
+            var shares = GetPortfolioAssetShares(portfolio);
+            
+            var stocks = portfolio.PortfolioStocks.ToList();
+            var fonds = portfolio.PortfolioFonds.ToList();
+            var bonds = portfolio.PortfolioBonds.ToList();
+
+            var portfolioAverageProfit = (decimal) 0;
+            foreach (var stock in stocks)
+            {
+                var share = (shares.FirstOrDefault(s => s.Ticket == stock.Stock.Ticket)?.Percent ?? 0) / 100;
+                portfolioAverageProfit += stock.Stock.AverageProfit * share;
+            }
+            
+            foreach (var fond in fonds)
+            {
+                var share = (shares.FirstOrDefault(s => s.Ticket == fond.Fond.Ticket)?.Percent ?? 0) / 100;
+                portfolioAverageProfit += fond.Fond.AverageProfit * share;
+            }
+            
+            foreach (var bond in bonds)
+            {
+                var share = (shares.FirstOrDefault(s => s.Ticket == bond.Bond.Ticket)?.Percent ?? 0) / 100;
+                portfolioAverageProfit += bond.Bond.AverageProfit * share;
+            }
+
+            return portfolioAverageProfit;
+        }
+
         public decimal GetRisk(List<Candle> priceCandles)
         {
             var profitPercents = GetProfitPercents(priceCandles).ToList();
             
             return profitPercents.Count > 0 ? profitPercents.StandardDeviation() : 0;
+        }
+
+        public decimal GetRisk(Portfolio portfolio)
+        {
+            var shares = GetPortfolioAssetShares(portfolio);
+            
+            var stocks = portfolio.PortfolioStocks.ToList();
+            var fonds = portfolio.PortfolioFonds.ToList();
+            var bonds = portfolio.PortfolioBonds.ToList();
+
+            var portfolioRisk = (decimal) 0;
+            foreach (var stock in stocks)
+            {
+                var share = (shares.FirstOrDefault(s => s.Ticket == stock.Stock.Ticket)?.Percent ?? 0) / 100;
+                portfolioRisk += stock.Stock.Risk * share;
+            }
+            
+            foreach (var fond in fonds)
+            {
+                var share = (shares.FirstOrDefault(s => s.Ticket == fond.Fond.Ticket)?.Percent ?? 0) / 100;
+                portfolioRisk += fond.Fond.Risk * share;
+            }
+            
+            foreach (var bond in bonds)
+            {
+                var share = (shares.FirstOrDefault(s => s.Ticket == bond.Bond.Ticket)?.Percent ?? 0) / 100;
+                portfolioRisk += bond.Bond.Risk * share;
+            }
+
+            return portfolioRisk;
         }
 
         public decimal GetSharpeRatio(decimal profit, decimal risk)
