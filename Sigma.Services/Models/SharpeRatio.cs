@@ -20,6 +20,7 @@ namespace Sigma.Services.Models
         {
             < (decimal) 0.3 => SharpRatioInterpretation.Terrible,
             < (decimal) 0.6 => SharpRatioInterpretation.Bad,
+            < (decimal) 0.8 => SharpRatioInterpretation.Normal,
             < (decimal) 1.0 => SharpRatioInterpretation.Good,
             _ => SharpRatioInterpretation.Excellent
         };
@@ -29,6 +30,7 @@ namespace Sigma.Services.Models
     {
         Excellent = 0,
         Good = 1,
+        Normal = 2,
         Bad = 3,
         Terrible = 4
     }
