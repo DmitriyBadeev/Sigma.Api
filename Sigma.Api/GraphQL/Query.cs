@@ -2,11 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using GreenDonut;
 using HotChocolate;
 using HotChocolate.AspNetCore.Authorization;
 using HotChocolate.Data;
+using HotChocolate.Data.Sorting.Expressions;
 using HotChocolate.Types;
 using MediatR;
+using Microsoft.AspNetCore.Mvc;
 using Sigma.Api.Attributes;
 using Sigma.Api.Mediator.ExcelReports;
 using Sigma.Api.Mediator.Operations;
@@ -31,7 +34,7 @@ namespace Sigma.Api.GraphQL
         [UseProjection]
         public IQueryable<Portfolio> GetPortfolios([ScopedService] FinanceDbContext context, [UserId] string userId)
         {
-            return context.Portfolios.Where(p => p.UserId == userId);
+            return context.Portfolios.Where(p => p.UserId == userId).OrderBy(p => p.Name);
         }
         
         [Authorize]
@@ -212,6 +215,14 @@ namespace Sigma.Api.GraphQL
             IEnumerable<Guid> portfolioIds)
         {
             return await mediator.Send(new GetSharpeRatio.Query(validationService, portfolioIds, aggregatePortfolioService, analyticService, userId));
+        }
+        
+        [Authorize]
+        [UseDbContext(typeof(FinanceDbContext))]
+        public async Task<DefaultPayload> SyncPortfolios([Service] ISynchronizationService synchronizationService)
+        { 
+            await synchronizationService.SyncPortfolios();
+            return new DefaultPayload(true, "Синхронизация прошла успешно");
         }
     }
 }
