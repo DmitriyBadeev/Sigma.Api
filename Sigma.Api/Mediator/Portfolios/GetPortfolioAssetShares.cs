@@ -34,6 +34,12 @@ namespace Sigma.Api.Mediator.Portfolios
                 }
 
                 var portfolio = await aggregatePortfolioService.Aggregate(ids);
+                
+                if (portfolio is null)
+                {
+                    return new DefaultPayload<List<AssetShare>>(true, "Доли посчитаны успешно");
+                }
+                
                 var shares = analyticService.GetPortfolioAssetShares(portfolio);
 
                 return new DefaultPayload<List<AssetShare>>(true, "Доли посчитаны успешно", shares);

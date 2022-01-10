@@ -2,14 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using GreenDonut;
 using HotChocolate;
 using HotChocolate.AspNetCore.Authorization;
 using HotChocolate.Data;
-using HotChocolate.Data.Sorting.Expressions;
 using HotChocolate.Types;
 using MediatR;
-using Microsoft.AspNetCore.Mvc;
 using Sigma.Api.Attributes;
 using Sigma.Api.Mediator.ExcelReports;
 using Sigma.Api.Mediator.Operations;

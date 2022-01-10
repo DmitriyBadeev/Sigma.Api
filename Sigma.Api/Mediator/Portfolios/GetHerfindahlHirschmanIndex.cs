@@ -34,6 +34,12 @@ namespace Sigma.Api.Mediator.Portfolios
                 }
 
                 var portfolio = await aggregatePortfolioService.Aggregate(ids);
+                
+                if (portfolio is null)
+                {
+                    return new DefaultPayload<HerfindahlHirschmanIndex>(true, "Индекс Херфиндаля-Хиршмана посчитан");
+                }
+                
                 var index = analyticService.GetHerfindahlHirschmanIndex(portfolio);
 
                 return new DefaultPayload<HerfindahlHirschmanIndex>(true, "Индекс Херфиндаля-Хиршмана посчитан", index);

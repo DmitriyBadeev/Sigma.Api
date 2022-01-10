@@ -34,6 +34,12 @@ namespace Sigma.Api.Mediator.Portfolios
                 }
 
                 var portfolio = await aggregatePortfolioService.Aggregate(ids);
+
+                if (portfolio is null)
+                {
+                    return new DefaultPayload<SharpeRatio>(true, "Индекс Шарпа посчитан");
+                }
+                
                 var index = analyticService.GetSharpeRatio(portfolio);
 
                 return new DefaultPayload<SharpeRatio>(true, "Индекс Шарпа посчитан", index);
